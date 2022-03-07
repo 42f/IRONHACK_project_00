@@ -43,9 +43,10 @@ function toggleVolume() {
 		setVisibility(unmutted, 'hidden')
 	}
 }
+const game = new Game(1);
 
 function startGame(event) {
-	const game = new Game(event.target.dataset.lvl);
+	// const game = new Game(event.target.dataset.lvl);
 
 	// toggleSplashScreen();
 
