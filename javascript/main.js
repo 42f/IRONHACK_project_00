@@ -44,6 +44,7 @@ function toggleVolume() {
 	}
 }
 const game = new Game(1);
+game.startGame();
 
 function startGame(event) {
 	// const game = new Game(event.target.dataset.lvl);
