@@ -73,7 +73,7 @@ header::-webkit-scrollbar {
 }
 
 .circle {
-  font-family: "American type", "Courier New", Courier, monospace;
+  font-family: "Courier New", Courier, monospace;
   font-size: 3.5rem;
   width: 250px;
   height: 250px;
@@ -150,8 +150,34 @@ header::-webkit-scrollbar {
   background-color: seagreen;
   margin: unset;
 
-	/* visibility: visible; */
-	visibility: hidden;
+  visibility: hidden;
+}
+
+#splash .players-selection {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+#splash .players-selection img {
+  margin: 70px;
+}
+
+#splash .players-selection img:first-child {
+  position: absolute;
+  width: 70px;
+}
+
+#splash .players-selection img:last-child {
+  position: relative;
+  width: 70px;
+  top: -55px;
+}
+
+#splash #player-nbr {
+  font-family: "Courier New", Courier, monospace;
+  color: white;
+  font-size: 4rem;
 }
 
 #splash .button {
@@ -161,7 +187,7 @@ header::-webkit-scrollbar {
 
   margin: 15% 0;
   padding: 5% 0;
-	width: 35%;
+  width: 35%;
 
   border: solid 2px black;
   background-color: crimson;
