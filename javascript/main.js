@@ -15,13 +15,6 @@ const state = {
 	splash: false
 }
 
-class Game {
-	constructor(level) {
-		this.lvl = level;
-		console.log('Instanciate game with lvl', level );
-	}
-}
-
 function setVisibility(element, visibilityProperty) {
 	element.style.visibility = visibilityProperty;
 }
@@ -54,7 +47,7 @@ function toggleVolume() {
 function startGame(event) {
 	const game = new Game(event.target.dataset.lvl);
 
-	toggleSplashScreen();
+	// toggleSplashScreen();
 
 }
 
@@ -62,6 +55,9 @@ toggleVolume();
 
 // Commented for debug
 // toggleSplashScreen();
+
+// debug
+startGame({target: {dataset: {lvl: 42}}});
 
 document.querySelector('#info-btn')?.addEventListener('click', toggleInfos);
 document.querySelector('#volume')?.addEventListener('click', toggleVolume);
