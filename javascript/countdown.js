@@ -1,9 +1,7 @@
 class Countdown {
   constructor(seconds) {
-    this.expireTime = Date.now() + (seconds * 1000);
-    this.startingTime = 0;
-    this.currentTime = 0;
-    this.currentTimeMs = 0;
+    this.expireTime = 0;
+    this.remainingMs = 0;
     this.intervalId = null;
   }
 
@@ -22,48 +20,36 @@ class Countdown {
   // CLOCK LOGIC ---------------------------------------------------------------
 
   updateClock() {
-    this.currentTimeMs = Date.now() - this.startingTime;
-    this.currentTime = Math.floor(this.currentTimeMs / 1000);
+    this.remainingMs = this.expireTime - Date.now();
   }
 
   getMinutes() {
-    return Math.floor(this.currentTime / 60);
+    return Math.floor((this.remainingMs / 1000) / 60);
   }
 
   getSeconds() {
-    return this.currentTime % 60;
+    return Math.floor((this.remainingMs / 1000) % 60);
   }
 
-  getMilliseconds() {
-    return Math.floor(this.currentTimeMs % 1000);
-  }
-
-  stop() {
-    clearInterval(this.intervalId);
-    this.pauseTimeStamp = Date.now();
-    this.intervalId = setInterval(() => {
-      this.updateClock();
-    }, 100);
+  getRemainingSeconds() {
+    return this.remainingMs / 1000;
   }
 
   reset() {
-    this.startingTime = 0;
-    this.currentTime = 0;
-    this.currentTimeMs = 0;
+    this.remainingMs = 0;
     clearInterval(this.intervalId);
     this.intervalId = null;
   }
 
-  start(callback) {
-    this.updateClock();
+  start(countdownSeconds, callback) {
     if (this.intervalId === null) {
-      this.startingTime = Date.now();
+      this.expireTime = Date.now() + (countdownSeconds * 1000);
+      this.intervalId = setInterval(() => {
+        this.updateClock();
+        if (callback) {
+          callback();
+        }
+      }, 400);
     }
-    this.intervalId = setInterval(() => {
-      this.updateClock();
-      if (callback) {
-        callback();
-      }
-    }, 400);
   }
 }
