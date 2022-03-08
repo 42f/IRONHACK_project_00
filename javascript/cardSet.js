@@ -1,8 +1,19 @@
+
+/*
+===================================================================
+-------------------------------------------------------------------
+			CARD
+-------------------------------------------------------------------
+===================================================================
+*/
+
+
 class Card {
 	constructor(content) {
 		this.cardElement = this.generateCardElement(content);
 		this.currentTimeout = null;
 		this.state = {
+			sneakPeak: false,
 			hidden: true,
 			found: false
 		}
@@ -30,10 +41,16 @@ class Card {
 		return cardElement;
 	}
 
+	getSneakPeakState() {
+		return this.state.sneakPeak;
+	}
+
 	sneakPeakCard() {
+		this.state.sneakPeak = true;
 		this.revealCard();
 		this.currentTimeout = setTimeout(() => {
 			this.hideCard(true);
+			this.state.sneakPeak = false;
 		}, 1000);
 	}
 
@@ -61,7 +78,13 @@ class Card {
 }
 
 
-/* CARD SET CLASS ------------------------------------------------------------*/
+/*
+===================================================================
+-------------------------------------------------------------------
+			CARD SET BASE CLASS
+-------------------------------------------------------------------
+===================================================================
+*/
 
 
 class CardSetBase {
@@ -95,7 +118,15 @@ class CardSetBase {
 	}
 }
 
-/* CARD SET DERIVED CLASSES --------------------------------------------------*/
+
+/*
+===================================================================
+-------------------------------------------------------------------
+			CARD SET CHILDREN CLASSES
+-------------------------------------------------------------------
+===================================================================
+*/
+
 
 class RandomNbrCardSet extends CardSetBase {
 	constructor(nbOfPairs) {
