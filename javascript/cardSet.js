@@ -49,7 +49,9 @@ class Card {
 		this.state.sneakPeak = true;
 		this.revealCard();
 		this.currentTimeout = setTimeout(() => {
-			this.hideCard(true);
+			if (!this.state.found) {
+				this.hideCard(true);
+			}
 			this.state.sneakPeak = false;
 		}, 1000);
 	}
@@ -75,6 +77,13 @@ class Card {
 	toggleCardVisibility(isFailure) {
 		this.state.hidden ? this.revealCard(isFailure) : this.hideCard();
 	}
+
+	setCardAsFound() {
+		this.revealCard();
+		this.state.found = true;
+		this.cardElement.classList.toggle('success');
+	}
+
 }
 
 
@@ -134,7 +143,7 @@ class RandomNbrCardSet extends CardSetBase {
 	}
 
 	static cardCmp(cardA, cardB) {
-		console.log('CMP FUNCTION between:', cardA, cardB);
+		// console.log('CMP FUNCTION between:', cardA, cardB);
 		const valueA = cardA.cardElement.querySelector('p').innerHTML;
 		const valueB = cardB.cardElement.querySelector('p').innerHTML;
 		console.log(`compare -> ${valueA} / ${valueB}`);

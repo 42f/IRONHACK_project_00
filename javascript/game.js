@@ -9,7 +9,6 @@
 */
 
 
-
 class Grid {
 	constructor() {
 		this.gridElement = document.querySelector('#grid');
@@ -37,6 +36,7 @@ class Game {
 		document.addEventListener('click', (event) => { this.clickHandler(event) });
 		this.timerBip = new Audio('./media/audio/bip.mp3');
 		this.timerElement = document.querySelector('#tourTimer');
+		this.scoreElement = document.querySelector('#score');
 
 		this.timer = new Countdown();
 		this.guessCouple = [];
@@ -91,9 +91,19 @@ class Game {
 		} else {
 			const sameCards = RandomNbrCardSet.cardCmp(this.guessCouple[0], this.guessCouple[1]);
 			console.log(sameCards ? 'correct' : 'incorrect');
+			if (sameCards) {
+				this.guessCouple.forEach(card => card.setCardAsFound())
+				this.incrementScore();
+			}
 			this.guessCouple = [];
 			return sameCards ? 'correct' : 'incorrect';
 		}
+	}
+
+
+	incrementScore() {
+		this.state.score++;
+		this.scoreElement.innerText = this.state.score;
 	}
 
 	/* GRID MANIPULATION METHODS -----------------------------------------------*/
