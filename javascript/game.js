@@ -1,4 +1,15 @@
 
+
+/*
+===================================================================
+-------------------------------------------------------------------
+			GRID
+-------------------------------------------------------------------
+===================================================================
+*/
+
+
+
 class Grid {
 	constructor() {
 		this.gridElement = document.querySelector('#grid');
@@ -9,8 +20,17 @@ class Grid {
 		const newLen = this.cards.push(cardElement);
 		this.gridElement.appendChild(this.cards[newLen - 1].getElement());
 	}
-
 }
+
+
+/*
+===================================================================
+-------------------------------------------------------------------
+			GAME
+-------------------------------------------------------------------
+===================================================================
+*/
+
 
 class Game {
 	constructor(level) {
@@ -19,8 +39,12 @@ class Game {
 		this.timerElement = document.querySelector('#tourTimer');
 
 		this.timer = new Countdown();
-		this.lvl = level;
 		this.guessCouple = [];
+		this.state = {
+			timeOut: false,
+			score: 0,
+			lvl: level,
+		}
 
 		this.grid = new Grid();
 		this.cardSet = new RandomNbrCardSet(3);
@@ -36,6 +60,41 @@ class Game {
 		}, 1200);
 	}
 
+	/* USER INTERACTIONS         -----------------------------------------------*/
+
+	validClic(event) {
+		return event.target.classList.contains('card')
+			&& this.guessCouple.length < 2
+			&& !this.state.timeOut;
+	}
+
+	clickHandler(event) {
+		if (this.validClic(event)) {
+			const clickedCard = this.cardSet.cards.find(elem =>
+				elem.getElement() === event.target
+			);
+			if (clickedCard && !clickedCard.getSneakPeakState()) {
+				clickedCard.sneakPeakCard();
+				this.addToGuess(clickedCard);
+			}
+		}
+	}
+
+	addToGuess(card) {
+		this.guessCouple.push(card);
+		if (this.guessCouple.length < 2) {
+			console.log('waiting');
+			setTimeout(() => {
+				this.guessCouple = [];
+			}, 1000);
+			return 'waiting';
+		} else {
+			const sameCards = RandomNbrCardSet.cardCmp(this.guessCouple[0], this.guessCouple[1]);
+			console.log(sameCards ? 'correct' : 'incorrect');
+			this.guessCouple = [];
+			return sameCards ? 'correct' : 'incorrect';
+		}
+	}
 
 	/* GRID MANIPULATION METHODS -----------------------------------------------*/
 
@@ -53,36 +112,14 @@ class Game {
 		}
 	}
 
-	/* USER INTERACTIONS         -----------------------------------------------*/
-
-	clickHandler(event) {
-		if (event.target.classList.contains('card')) {
-			const cardElement = this.cardSet.cards.find(elem => {
-				return elem.getElement() === event.target
-			});
-			cardElement.sneakPeakCard();
-		}
-	}
-
-	addToGuess(card) {
-		this.guessCouple.push(card);
-		console.log('add to guess, total guess couple is', this.guessCouple);
-		if (this.guessCouple.length < 2) {
-			console.log('waiting');
-			return 'waiting';
-		} else {
-			const ret = RandomNbrCardSet.cardCmp(this.guessCouple[0], this.guessCouple[1]) ? 'correct' : 'incorrect';
-			console.log(ret);
-			this.guessCouple = [];
-			return ret;
-		}
-	}
-
 	/* TIMER MANIPULATIONS       -----------------------------------------------*/
 
 	startTimer() {
-		this.timer.start(30, () => {
+		this.timer.start(999, () => {
 			this.renderTime(this.timer.getRemainingSeconds(), this.timer.split());
+			if (!this.state.timeOut && this.timer.getRemainingSeconds() <= 0) {
+				this.state.timeOut = true;
+			}
 		});
 	}
 
