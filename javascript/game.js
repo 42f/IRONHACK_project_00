@@ -29,6 +29,11 @@ class Game {
 		this.timer = new Countdown();
 		this.lvl = level;
 		this.grid = new Grid();
+
+		this.cardSet = new RandomNbrCardSet(12);
+
+		this.cardSet.logCards();
+
 		for (let i = 1; i < 20; i++) {
 			setTimeout(() => {
 				console.log('ADD CARD');
@@ -57,12 +62,17 @@ class Game {
 	}
 
 	renderTime(remainingSeconds, timeStr) {
-		this.timerElement.innerText = timeStr;
-		if (remainingSeconds < 25) {
-			this.timerElement.classList.toggle('timer-reach-limit');
-			this.timerBip.play();
+		if (remainingSeconds >= 0) {
+			this.timerElement.innerText = timeStr;
+			if (remainingSeconds < 25) {
+				this.timerElement.classList.toggle('timer-reach-limit');
+				// play bip warning the end of timer
+				// this.timerBip.play();
+			}
+		} else {
+			this.timerElement.classList.add('timer-reach-limit');
 		}
 	}
-
-
 }
+
+
