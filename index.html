@@ -6,18 +6,21 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width">
 	<link rel="stylesheet" href="./styles/style.css">
-	<title>RedFish</title>
+	<title>GoldFish</title>
 </head>
 
 <body>
+	<audio>
+		<source id="audio-bip" src="./media/audio/bip.mp3" type="audio/mpeg">
+	</audio>
 
 	<nav>
 		<i id="volume">
-			<img id="muteOn" src="./images/ico/ic-sound-mute.svg" alt="muteOn icone">
-			<img id="muteOff" src="./images/ico/ic-sound.svg" alt="muteOff icone">
+			<img id="muteOn" src="./media/ico/ic-sound-mute.svg" alt="muteOn icone">
+			<img id="muteOff" src="./media/ico/ic-sound.svg" alt="muteOff icone">
 		</i>
 		<h1>Goldfish</h1>
-		<i id="info-btn"><img src="./images/ico/ic-vertical-menu.svg" alt="menu icone"></i>
+		<i id="info-btn"><img src="./media/ico/ic-vertical-menu.svg" alt="menu icone"></i>
 	</nav>
 
 
@@ -25,9 +28,9 @@
 
 		<!-- FOR MULTI PLAYER IMPLEMENTATION -->
 		<!-- <div class="players-selection">
-			<div class="player" data-lvl="-1"><i><img src="./images/ico/ic-remove.svg" alt="Remove one player"><img src="./images/ico/ic-player.svg" alt="Remove one player"></i></div>
+			<div class="player" data-lvl="-1"><i><img src="./media/ico/ic-remove.svg" alt="Remove one player"><img src="./media/ico/ic-player.svg" alt="Remove one player"></i></div>
 			<p id="player-nbr">1</p>
-			<div class="player" data-lvl="1"><i><img src="./images/ico/ic-add.svg" alt="Add one player"><img src="./images/ico/ic-player.svg" alt="Add one player"></i></div>
+			<div class="player" data-lvl="1"><i><img src="./media/ico/ic-add.svg" alt="Add one player"><img src="./media/ico/ic-player.svg" alt="Add one player"></i></div>
 		</div> -->
 
 		<div class="button" data-lvl="1">easy</div>
@@ -35,59 +38,55 @@
 		<div class="button" data-lvl="3">extreme</div>
 	</div>
 	<div class="modal" id="infos">
-			<article>
-				<h3>Rules</h3>
-				<p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Atque alias enim eveniet necessitatibus qui
-					adipisci
-					porro dolore quis commodi consequuntur veniam libero repellendus sapiente corporis quod earum, totam vero
-					facere, tempore temporibus, aut neque autem? Excepturi doloribus labore vitae distinctio.</p>
-			</article>
-			<article>
-				<h3>Me</h3>
-				<p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Atque alias enim eveniet necessitatibus qui
-					adipisci
-					porro dolore quis commodi consequuntur veniam libero repellendus sapiente corporis quod earum, totam vero
-					facere, tempore temporibus, aut neque autem? Excepturi doloribus labore vitae distinctio.</p>
-			</article>
-			<article>
-				<h3>Me</h3>
-				<p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Atque alias enim eveniet necessitatibus qui
-					adipisci
-					porro dolore quis commodi consequuntur veniam libero repellendus sapiente corporis quod earum, totam vero
-					facere, tempore temporibus, aut neque autem? Excepturi doloribus labore vitae distinctio.</p>
-			</article>
-			<article>
-				<h3>Me</h3>
-				<p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Atque alias enim eveniet necessitatibus qui
-					adipisci
-					porro dolore quis commodi consequuntur veniam libero repellendus sapiente corporis quod earum, totam vero
-					facere, tempore temporibus, aut neque autem? Excepturi doloribus labore vitae distinctio.</p>
-			</article>
+		<article>
+			<h3>Rules</h3>
+			<p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Atque alias enim eveniet necessitatibus qui
+				adipisci
+				porro dolore quis commodi consequuntur veniam libero repellendus sapiente corporis quod earum, totam vero
+				facere, tempore temporibus, aut neque autem? Excepturi doloribus labore vitae distinctio.</p>
+		</article>
+		<article>
+			<h3>Me</h3>
+			<p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Atque alias enim eveniet necessitatibus qui
+				adipisci
+				porro dolore quis commodi consequuntur veniam libero repellendus sapiente corporis quod earum, totam vero
+				facere, tempore temporibus, aut neque autem? Excepturi doloribus labore vitae distinctio.</p>
+		</article>
+		<article>
+			<h3>Me</h3>
+			<p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Atque alias enim eveniet necessitatibus qui
+				adipisci
+				porro dolore quis commodi consequuntur veniam libero repellendus sapiente corporis quod earum, totam vero
+				facere, tempore temporibus, aut neque autem? Excepturi doloribus labore vitae distinctio.</p>
+		</article>
+		<article>
+			<h3>Me</h3>
+			<p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Atque alias enim eveniet necessitatibus qui
+				adipisci
+				porro dolore quis commodi consequuntur veniam libero repellendus sapiente corporis quod earum, totam vero
+				facere, tempore temporibus, aut neque autem? Excepturi doloribus labore vitae distinctio.</p>
+		</article>
 	</div>
 	<header>
 		<div class="infos-bar">
 			<div class="circle" id="tourTimer">00:00</div>
 			<div class="circle score">0</div>
-			<!-- <div class="circle score">0</div>
-			<div class="circle score">0</div>
-			<div class="circle score">0</div>
-			<div class="circle score">0</div> -->
 		</div>
 	</header>
 
 
-	<section class="grid">
+	<section id="grid">
 
 	</section>
 
 	<footer>
 
-	</footer id="new-card-tempalte">
+	</footer>
 
-	<template>
+	<template id="new-card-tempalte">
 		<div class="card"></div>
 	</template>
-	<script src="./javascript/timer.js"></script>
+	<script src="./javascript/countdown.js"></script>
 	<script src="./javascript/game.js"></script>
 	<script src="./javascript/main.js"></script>
 </body>

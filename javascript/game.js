@@ -1,14 +1,45 @@
 
+class Grid {
+	constructor() {
+		this.gridElement = document.querySelector('#grid');
+		this.cardElements = [];
+	}
+
+	makeCardElement() {
+		const cardElement = document.createElement('div');
+		cardElement.classList.add('card');
+
+		cardElement.style.animationDuration = `${Math.round(Math.random() * 300).toString()}ms`;
+		cardElement.style.animationDelay = `${Math.round(Math.random() * 900).toString()}ms`;
+
+		return cardElement;
+	}
+
+	addCard() {
+		const newLen = this.cardElements.push(this.makeCardElement());
+		this.gridElement.appendChild(this.cardElements[newLen - 1]);
+	}
+
+}
+
 class Game {
 	constructor(level) {
+		this.timerBip = new Audio('./media/audio/bip.mp3');
 		this.timerElement = document.querySelector('#tourTimer');
-		this.timer = new Timer();
+		this.timer = new Countdown();
 		this.lvl = level;
+		this.grid = new Grid();
+		for (let i = 1; i < 20; i++) {
+			setTimeout(() => {
+				console.log('ADD CARD');
+				this.grid.addCard()
+			}, 20);
+		}
 	}
 
 	startTimer() {
-		this.timer.start(() => {
-			this.renderTime(this.timer.split());
+		this.timer.start(30, () => {
+			this.renderTime(this.timer.getRemainingSeconds(), this.timer.split());
 		});
 	}
 
@@ -25,9 +56,11 @@ class Game {
 		this.startTimer();
 	}
 
-	renderTime(timeStr) {
-		if (this.timerElement) {
-			this.timerElement.innerText = timeStr;
+	renderTime(remainingSeconds, timeStr) {
+		this.timerElement.innerText = timeStr;
+		if (remainingSeconds < 25) {
+			this.timerElement.classList.toggle('timer-reach-limit');
+			this.timerBip.play();
 		}
 	}
 

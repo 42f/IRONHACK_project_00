@@ -15,6 +15,9 @@ const state = {
 	splash: false
 }
 
+const audioBip = document.querySelector('#audio-bip');
+console.log(audioBip.innerHTML);
+
 function setVisibility(element, visibilityProperty) {
 	element.style.visibility = visibilityProperty;
 }
@@ -36,9 +39,11 @@ function toggleVolume() {
 	const mutted = document.querySelector('#muteOn');
 	const unmutted = document.querySelector('#muteOff');
 	if (state.volume) {
+		audioBip.muted = false;
 		setVisibility(unmutted, 'visible')
 		setVisibility(mutted, 'hidden')
 	} else {
+		audioBip.muted = true;
 		setVisibility(mutted, 'visible')
 		setVisibility(unmutted, 'hidden')
 	}
@@ -58,8 +63,6 @@ toggleVolume();
 // Commented for debug
 // toggleSplashScreen();
 
-// debug
-startGame({target: {dataset: {lvl: 42}}});
 
 document.querySelector('#info-btn')?.addEventListener('click', toggleInfos);
 document.querySelector('#volume')?.addEventListener('click', toggleVolume);
