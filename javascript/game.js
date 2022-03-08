@@ -5,39 +5,31 @@ class Grid {
 		this.cardElements = [];
 	}
 
-	makeCardElement() {
-		const cardElement = document.createElement('div');
-		cardElement.classList.add('card');
-
-		cardElement.style.animationDuration = `${Math.round(Math.random() * 300).toString()}ms`;
-		cardElement.style.animationDelay = `${Math.round(Math.random() * 900).toString()}ms`;
-
-		return cardElement;
-	}
-
-	addCard() {
-		const newLen = this.cardElements.push(this.makeCardElement());
-		this.gridElement.appendChild(this.cardElements[newLen - 1]);
+	addCard(cardElement) {
+		const newLen = this.cardElements.push(cardElement);
+		this.gridElement.appendChild(this.cardElements[newLen - 1].getElement());
 	}
 
 }
 
 class Game {
 	constructor(level) {
+
 		this.timerBip = new Audio('./media/audio/bip.mp3');
 		this.timerElement = document.querySelector('#tourTimer');
+
 		this.timer = new Countdown();
+
 		this.lvl = level;
+
 		this.grid = new Grid();
-
 		this.cardSet = new RandomNbrCardSet(12);
-
 		this.cardSet.logCards();
 
-		for (let i = 1; i < 20; i++) {
+		for (let i = 0; i < this.cardSet.cards.length; i++) {
 			setTimeout(() => {
 				console.log('ADD CARD');
-				this.grid.addCard()
+				this.grid.addCard(this.cardSet.cards[i])
 			}, 20);
 		}
 	}

@@ -1,54 +1,60 @@
 class Card {
 	constructor(content) {
-		this.htmlElement = this.generateHtmlElement(content);
+		this.cardElement = this.generateCardElement(content);
+		this.state = {
+			hidden: true,
+			found: false
+		}
 	}
 
-	generateHtmlElement(content) {
-		const template = document.querySelector('#new-card-template');
-		const cardElement = template.content.cloneNode(true);
-		cardElement.querySelector('div').innerText = content;
+	getElement() {
+		return this.cardElement ;
+	}
+
+	generateCardElement(content) {
+		const cardElement = document.createElement('div');
+		cardElement.classList.add('card');
+		cardElement.innerText = content;
+
+		cardElement.style.animationDuration = `${Math.round(50 + Math.random() * 250).toString()}ms`;
+		cardElement.style.animationDelay = `${Math.round(50 + Math.random() * 750).toString()}ms`;
+
 		return cardElement;
 	}
 }
 
 class CardSetBase {
 	constructor(nbOfPairs) {
-		this.hiddenCards = [];
-		this.foundCards = [];
+		this.cards = [];
 		this.populateCardSet(nbOfPairs);
 	}
 
-	// makes as many card as nbOfPairs times 2 and store them in the hiddenCards array
+	// makes as many card as nbOfPairs times 2 and store them in the cards array
 	populateCardSet(nbOfPairs) {
 		for (let pair = 0; pair < nbOfPairs; pair++) {
 			const cardContent = this.makeOneCard();
-			this.hiddenCards.push(cardContent);
-			this.hiddenCards.push(cardContent);
+			this.cards.push(cardContent, cardContent);
 		}
 	}
 
 	// generates one card, each derived class will implement its own factory
-	makeOneCard() {}
+	makeOneCard() { }
 
 
 	// shows card to user by manipulating the DOM
-	// revealCard(card)
-	//  {}
+	revealCard(card) { }
 	// hides card from user, if isFailure adds fail visual effect to it
-	// // hideCard(card, isFailure)
-	//  {}
+	hideCard(card, isFailure) { }
 
 	// returns true if two cards are from the same paire (i.e. has the same innerHTML)
-	// // cardCmp(cardA, cardB)
-	//  {}
+	cardCmp(cardA, cardB) { }
 
 	// sets card as found by manipulating the DOM and add them to the foundCards array
-	// validate(card)
-	//  {}
+	validate(card) { }
 
 	logCards() {
-		console.log('Cards Hidden: ', this.hiddenCards)
-		console.log('Cards Found: ', this.foundCards)
+		console.log(`CARDS LEN = ${this.cards.length}`);
+		console.log('CARDS = ', this.cards);
 	}
 }
 
@@ -59,6 +65,10 @@ class RandomNbrCardSet extends CardSetBase {
 
 
 	makeOneCard() {
+		let card;
+		do  {
+			card = new Card(Math.floor(Math.random() * 100));
+		} while (this.h)
 		return new Card(Math.floor(Math.random() * 100));
 	}
 }
