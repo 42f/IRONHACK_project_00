@@ -1,14 +1,20 @@
 class Card {
 	constructor(content) {
 		this.cardElement = this.generateCardElement(content);
+		this.currentTimeout = null;
 		this.state = {
-			hidden: false,
+			hidden: true,
 			found: false
 		}
 	}
 
 	getElement() {
 		return this.cardElement;
+	}
+
+	stopTimeout() {
+		clearTimeout(this.currentTimeout);
+		this.currentTimeout = null;
 	}
 
 	generateCardElement(content) {
@@ -22,27 +28,66 @@ class Card {
 
 		return cardElement;
 	}
+
+	sneakPeakCard() {
+		this.revealCard();
+		this.currentTimeout = setTimeout(() => {
+			this.hideCard(true);
+		}, 1000);
+	}
+
+	setEventListenner() {
+		this.cardElement.addEventListener('click', () => {this.sneakPeakCard()});
+	}
+
+	unsetEventListenner() {
+		this.cardElement.removeEventListener('click', () => {this.sneakPeakCard()});
+	}
+
 	// shows card to user by manipulating the DOM
 	revealCard() {
+		this.state.hidden = false;
 		this.cardElement.querySelector('p').style.visibility = 'visible';
-		console.log('revealCard');
 	}
+
 	// hides card from user, if isFailure adds fail visual effect to it
 	hideCard(isFailure) {
+		this.state.hidden = true;
 		this.cardElement.querySelector('p').style.visibility = 'hidden';
-		console.log('hideCard', isFailure);
+		if (isFailure) {
+			this.cardElement.classList.toggle('failure');
+			setTimeout(() => {
+				this.cardElement.classList.toggle('failure');
+			}, 900);
+		}
 	}
 
 	toggleCardVisibility(isFailure) {
-		this.state.hidden = !this.state.hidden;
-		this.state.hidden ? this.hideCard(isFailure) : this.revealCard();
+		this.state.hidden ? this.revealCard(isFailure) : this.hideCard();
 	}
 }
+
+
+/* CARD SET CLASS ------------------------------------------------------------*/
+
 
 class CardSetBase {
 	constructor(nbOfPairs) {
 		this.cards = [];
 		this.populateCardSet(nbOfPairs);
+		this.setAllEventListenner();
+	}
+
+	setAllEventListenner() {
+		for(let card of this.cards) {
+			card.setEventListenner();
+		}
+	}
+
+	unsetAllEventListenner() {
+		for(let card of this.cards) {
+			card.unsetEventListenner();
+		}
 	}
 
 	// makes as many card as nbOfPairs times 2 and store them in the cards array
@@ -69,11 +114,21 @@ class CardSetBase {
 	}
 }
 
+/* CARD SET DERIVED CLASSES --------------------------------------------------*/
+
 class RandomNbrCardSet extends CardSetBase {
 	constructor(nbOfPairs) {
 		super(nbOfPairs);
 	}
 
+	static cardCmp(cardA, cardB) {
+		console.log('CMP FUNCTION between:', cardA, cardB);
+		const valueA = cardA.cardElement.querySelector('p').innerHTML;
+		const valueB = cardB.cardElement.querySelector('p').innerHTML;
+		console.log(`compare -> ${valueA} / ${valueB}`);
+
+		return valueA === valueB;
+	}
 
 	makeOneCard() {
 		let value = Math.floor(Math.random() * 10000);
