@@ -22,6 +22,7 @@ class Card {
 		const pElement = cardElement.appendChild(document.createElement('p'));
 		cardElement.classList.add('card');
 		pElement.innerText = content;
+		pElement.classList.add('card-content');
 		pElement.style.visibility = 'hidden';
 		cardElement.style.animationDuration = `${Math.round(50 + Math.random() * 250).toString()}ms`;
 		cardElement.style.animationDelay = `${Math.round(50 + Math.random() * 750).toString()}ms`;
@@ -34,14 +35,6 @@ class Card {
 		this.currentTimeout = setTimeout(() => {
 			this.hideCard(true);
 		}, 1000);
-	}
-
-	setEventListenner() {
-		this.cardElement.addEventListener('click', () => {this.sneakPeakCard()});
-	}
-
-	unsetEventListenner() {
-		this.cardElement.removeEventListener('click', () => {this.sneakPeakCard()});
 	}
 
 	// shows card to user by manipulating the DOM
@@ -75,19 +68,7 @@ class CardSetBase {
 	constructor(nbOfPairs) {
 		this.cards = [];
 		this.populateCardSet(nbOfPairs);
-		this.setAllEventListenner();
-	}
-
-	setAllEventListenner() {
-		for(let card of this.cards) {
-			card.setEventListenner();
-		}
-	}
-
-	unsetAllEventListenner() {
-		for(let card of this.cards) {
-			card.unsetEventListenner();
-		}
+		// this.setAllEventListenner();
 	}
 
 	// makes as many card as nbOfPairs times 2 and store them in the cards array

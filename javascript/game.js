@@ -14,6 +14,7 @@ class Grid {
 
 class Game {
 	constructor(level) {
+		document.addEventListener('click', (event) => { this.clickHandler(event) });
 		this.timerBip = new Audio('./media/audio/bip.mp3');
 		this.timerElement = document.querySelector('#tourTimer');
 
@@ -22,9 +23,9 @@ class Game {
 		this.guessCouple = [];
 
 		this.grid = new Grid();
-		this.randomNbCardSet = new RandomNbrCardSet(3);
+		this.cardSet = new RandomNbrCardSet(3);
 
-		// this.randomNbCardSet.logCards();
+		// this.cardSet.logCards();
 		// this.setCardsInGridRandomly();
 		this.setCardsInGridInOrder();
 
@@ -35,21 +36,11 @@ class Game {
 		}, 1200);
 	}
 
-	setAllEventListenners() {
-		for (let card of this.grid.cards) {
-			card.revealCard(false);
-			card.cardElement.addEventListener('click', () => {
-				this.addToGuess(card);
-			}, 1000);
-		}
-	}
 
-	unsetAllEventListenners() {
-
-	}
+	/* GRID MANIPULATION METHODS -----------------------------------------------*/
 
 	setCardsInGridRandomly() {
-		const tmpCards = [...this.randomNbCardSet.cards];
+		const tmpCards = [...this.cardSet.cards];
 		while (tmpCards.length) {
 			const randomCard = tmpCards.splice(Math.floor(Math.random() * tmpCards.length), 1);
 			this.grid.addCard(randomCard[0]);
@@ -57,8 +48,19 @@ class Game {
 	}
 
 	setCardsInGridInOrder() {
-		for (let i = 0; i < this.randomNbCardSet.cards.length; i++) {
-			this.grid.addCard(this.randomNbCardSet.cards[i]);
+		for (let i = 0; i < this.cardSet.cards.length; i++) {
+			this.grid.addCard(this.cardSet.cards[i]);
+		}
+	}
+
+	/* USER INTERACTIONS         -----------------------------------------------*/
+
+	clickHandler(event) {
+		if (event.target.classList.contains('card')) {
+			const cardElement = this.cardSet.cards.find(elem => {
+				return elem.getElement() === event.target
+			});
+			cardElement.sneakPeakCard();
 		}
 	}
 
@@ -69,13 +71,14 @@ class Game {
 			console.log('waiting');
 			return 'waiting';
 		} else {
-			this.randomNbCardSet.unsetAllEventListenner();
 			const ret = RandomNbrCardSet.cardCmp(this.guessCouple[0], this.guessCouple[1]) ? 'correct' : 'incorrect';
 			console.log(ret);
 			this.guessCouple = [];
 			return ret;
 		}
 	}
+
+	/* TIMER MANIPULATIONS       -----------------------------------------------*/
 
 	startTimer() {
 		this.timer.start(30, () => {
