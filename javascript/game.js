@@ -2,12 +2,12 @@
 class Grid {
 	constructor() {
 		this.gridElement = document.querySelector('#grid');
-		this.cardElements = [];
+		this.cards = [];
 	}
 
 	addCard(cardElement) {
-		const newLen = this.cardElements.push(cardElement);
-		this.gridElement.appendChild(this.cardElements[newLen - 1].getElement());
+		const newLen = this.cards.push(cardElement);
+		this.gridElement.appendChild(this.cards[newLen - 1].getElement());
 	}
 
 }
@@ -23,14 +23,17 @@ class Game {
 		this.lvl = level;
 
 		this.grid = new Grid();
-		this.cardSet = new RandomNbrCardSet(12);
-		this.cardSet.logCards();
+		this.randomNbCardSet = new RandomNbrCardSet(12);
+		this.randomNbCardSet.logCards();
 
-		for (let i = 0; i < this.cardSet.cards.length; i++) {
-			setTimeout(() => {
-				console.log('ADD CARD');
-				this.grid.addCard(this.cardSet.cards[i])
-			}, 20);
+		const tmpCards = [...this.randomNbCardSet.cards];
+		while (tmpCards.length) {
+			const randomCard = tmpCards.splice(Math.floor(Math.random() * tmpCards.length), 1);
+			this.grid.addCard(randomCard[0]);
+		}
+		for (let card of this.grid.cards) {
+			console.log(card);
+			card.toggleCardVisibility(false);
 		}
 	}
 

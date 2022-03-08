@@ -147,24 +147,35 @@ header::-webkit-scrollbar {
   align-items: center;
 }
 
+/* CARDS  ---------------------------------------------*/
+
 .card {
   margin: 30px 30px;
-  height: 17vh;
-  width: 17vh;
+  height: 10vh;
+  width: 10vh;
   border-radius: 50px;
   background: #e0e0e0;
   box-shadow: 10px 10px 60px #bebebe, -10px -10px 60px #ffffff;
   animation: cardAppear;
   animation-fill-mode: backwards;
   animation-timing-function: ease-out;
+  border: solid 3vh #bebebe17;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+.card p {
+  color: #f0f;
 }
 
 .card:hover {
   box-shadow:
-    -10px 0 80px #f0f,
-    0 -10px 80px rgb(0, 255, 115),
-    10px 0 80px #0ff,
-    0 10px 80px rgb(238, 255, 0);
+    -1.5vh 0 70px #f0f,
+    0 -2vh 70px rgb(0, 255, 115),
+    2vh 0 70px #0ff,
+    0 2vh 70px #ff6f00;
 }
 
 @keyframes cardAppear {

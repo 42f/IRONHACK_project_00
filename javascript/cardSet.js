@@ -2,24 +2,40 @@ class Card {
 	constructor(content) {
 		this.cardElement = this.generateCardElement(content);
 		this.state = {
-			hidden: true,
+			hidden: false,
 			found: false
 		}
 	}
 
 	getElement() {
-		return this.cardElement ;
+		return this.cardElement;
 	}
 
 	generateCardElement(content) {
 		const cardElement = document.createElement('div');
+		const pElement = cardElement.appendChild(document.createElement('p'));
 		cardElement.classList.add('card');
-		cardElement.innerText = content;
-
+		pElement.innerText = content;
+		pElement.style.visibility = 'hidden';
 		cardElement.style.animationDuration = `${Math.round(50 + Math.random() * 250).toString()}ms`;
 		cardElement.style.animationDelay = `${Math.round(50 + Math.random() * 750).toString()}ms`;
 
 		return cardElement;
+	}
+	// shows card to user by manipulating the DOM
+	revealCard() {
+		this.cardElement.querySelector('p').style.visibility = 'visible';
+		console.log('revealCard');
+	}
+	// hides card from user, if isFailure adds fail visual effect to it
+	hideCard(isFailure) {
+		this.cardElement.querySelector('p').style.visibility = 'hidden';
+		console.log('hideCard', isFailure);
+	}
+
+	toggleCardVisibility(isFailure) {
+		this.state.hidden = !this.state.hidden;
+		this.state.hidden ? this.hideCard(isFailure) : this.revealCard();
 	}
 }
 
@@ -32,19 +48,14 @@ class CardSetBase {
 	// makes as many card as nbOfPairs times 2 and store them in the cards array
 	populateCardSet(nbOfPairs) {
 		for (let pair = 0; pair < nbOfPairs; pair++) {
-			const cardContent = this.makeOneCard();
-			this.cards.push(cardContent, cardContent);
+			const cardElements = this.makeOneCard();
+			this.cards.push(cardElements[0], cardElements[1]);
 		}
 	}
 
 	// generates one card, each derived class will implement its own factory
 	makeOneCard() { }
 
-
-	// shows card to user by manipulating the DOM
-	revealCard(card) { }
-	// hides card from user, if isFailure adds fail visual effect to it
-	hideCard(card, isFailure) { }
 
 	// returns true if two cards are from the same paire (i.e. has the same innerHTML)
 	cardCmp(cardA, cardB) { }
@@ -65,10 +76,10 @@ class RandomNbrCardSet extends CardSetBase {
 
 
 	makeOneCard() {
-		let card;
-		do  {
-			card = new Card(Math.floor(Math.random() * 100));
-		} while (this.h)
-		return new Card(Math.floor(Math.random() * 100));
+		let value = Math.floor(Math.random() * 10000);
+		// implement do while to make sure cards don't have same value twice
+		// do  {
+		// } while (this.)
+		return [new Card(value), new Card(value)];
 	}
 }
