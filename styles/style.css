@@ -142,7 +142,7 @@ header::-webkit-scrollbar {
 
 #grid {
   background-color: #e0e0e0;
-  min-height: 45vh;
+  min-height: 45vw;
   height: 100%;
   display: flex;
   flex-direction: row;
@@ -182,8 +182,8 @@ header::-webkit-scrollbar {
 }
 
 .card:hover {
-  box-shadow: -1.5vh 0 70px #f0f, 0 -2vh 70px rgb(0, 255, 115), 2vh 0 70px #0ff,
-    0 2vh 70px #ff6f00;
+  box-shadow: -15px 0 70px #f0f, 0 -20px 70px rgb(0, 255, 115), 20px 0 70px #0ff,
+    0 20px 70px #ff6f00;
 }
 
 @keyframes cardAppear {

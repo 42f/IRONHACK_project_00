@@ -187,6 +187,7 @@ class Game {
 	endGame(hasWin) {
 		if (hasWin && hasWin === 'win') {
 			this.state.win = true;
+			this.timerElement.classList.remove('countdown-reach-limit');
 			this.timerElement.classList.add('countdown-win');
 		} else {
 			console.log('GAME OVER');
@@ -204,7 +205,7 @@ class Game {
 			if (remainingSeconds < 25) {
 				this.timerElement.classList.toggle('countdown-reach-limit');
 				// play bip warning the end ofcountdown
-				if (!this.timerBip?.muted && remainingSeconds <= 10) {
+				if (this.timerBip && !this.timerBip.muted && remainingSeconds <= 10) {
 					this.timerBip.play().catch((e) => {});
 				}
 			}
