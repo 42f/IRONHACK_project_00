@@ -35,7 +35,7 @@ class Countdown {
     return this.remainingMs / 1000;
   }
 
-  reset() {
+  stop() {
     this.remainingMs = 0;
     clearInterval(this.intervalId);
     this.intervalId = null;
