@@ -40,9 +40,10 @@ class Game {
 		this.guessCouple = [];
 		this.guessTimeoutId = null;
 		this.state = {
-			overTime: false,
+			timeOver: false,
 			score: 0,
 			lvl: level,
+			win: false
 		}
 		this.grid = new Grid();
 		this.cardSet = new RandomNbrCardSet(2);
@@ -64,7 +65,8 @@ class Game {
 		return event.target.classList.contains('card')
 			&& !event.target.classList.contains('success')
 			&& this.guessCouple.length < 2
-			&& !this.state.overTime;
+			&& !this.state.timeOver
+			&& !this.state.win;
 	}
 
 	clickHandler(event) {
@@ -95,13 +97,22 @@ class Game {
 		}, 1000);
 	}
 
+	clearWaiting() {
+		if (this.guessTimeoutId) {
+			clearInterval(this.guessTimeoutId);
+			this.guessTimeoutId = null;
+		}
+	}
+
 	abortGuess(isFailure) {
 		if (isFailure) {
 			this.guessCouple.forEach(card => {
 				card.unsetSneakPeak();
 				setTimeout(() => {
-					card.hideCard(true);
-				}, 500);
+					if (!this.state.timeOver) {
+						card.hideCard(true);
+					}
+				}, 800);
 			})
 		}
 		this.guessCouple = [];
@@ -152,17 +163,18 @@ class Game {
 	/* TIMER MANIPULATIONS       -----------------------------------------------*/
 
 	startTimer() {
-		this.countdown.start(2, () => {
+		this.countdown.start(15, () => {
 			this.timerCallback()
 		});
 	}
 
 	timerCallback() {
-		this.renderTime(this.countdown.getRemainingSeconds(), this.countdown.split());
-
-		if (!this.state.overTime && this.countdown.getRemainingSeconds() <= 0) {
-			this.state.overTime = true;
-			this.endGame();
+		if (!this.state.timeOver) {
+			this.renderTime(this.countdown.getRemainingSeconds(), this.countdown.split());
+			if(this.countdown.getRemainingSeconds() <= 0) {
+				this.state.timeOver = true;
+				this.endGame();
+			}
 		}
 	}
 
@@ -171,13 +183,15 @@ class Game {
 	}
 
 	endGame(hasWin) {
-		this.countdown.stop();
-		this.cardSet.revealAllCards();
 		if (hasWin && hasWin === 'win') {
+			this.state.win = true;
 			this.timerElement.classList.add('countdown-win');
 		} else {
 			console.log('GAME OVER');
 		}
+		this.clearWaiting();
+		this.countdown.stop();
+		this.cardSet.revealAllCards();
 	}
 
 	renderTime(remainingSeconds, timeStr) {
