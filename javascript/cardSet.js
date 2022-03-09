@@ -11,7 +11,7 @@
 class Card {
 	constructor(content) {
 		this.cardElement = this.generateCardElement(content);
-		this.currentTimeout = null;
+		this.sneakPeakTimeout = null;
 		this.state = {
 			sneakPeak: false,
 			hidden: true,
@@ -19,13 +19,32 @@ class Card {
 		}
 	}
 
+	isFound() {
+		return this.state.found;
+	}
+
 	getElement() {
 		return this.cardElement;
 	}
 
-	stopTimeout() {
-		clearTimeout(this.currentTimeout);
-		this.currentTimeout = null;
+	getSneakPeakState() {
+		return this.state.sneakPeak;
+	}
+
+	setSneakPeak() {
+		this.state.sneakPeak = true;
+		this.revealCard();
+		this.sneakPeakTimeout = setTimeout(() => {
+			this.unsetSneakPeak();
+		}, 1000);
+	}
+
+	unsetSneakPeak() {
+		this.state.sneakPeak = false;
+		if (this.sneakPeakTimeout) {
+			clearTimeout(this.sneakPeakTimeout);
+			this.sneakPeakTimeout = null;
+		}
 	}
 
 	generateCardElement(content) {
@@ -41,21 +60,6 @@ class Card {
 		return cardElement;
 	}
 
-	getSneakPeakState() {
-		return this.state.sneakPeak;
-	}
-
-	sneakPeakCard() {
-		this.state.sneakPeak = true;
-		this.revealCard();
-		this.currentTimeout = setTimeout(() => {
-			if (!this.state.found) {
-				this.hideCard(true);
-			}
-			this.state.sneakPeak = false;
-		}, 1000);
-	}
-
 	// shows card to user by manipulating the DOM
 	revealCard() {
 		this.state.hidden = false;
@@ -67,11 +71,15 @@ class Card {
 		this.state.hidden = true;
 		this.cardElement.querySelector('p').style.visibility = 'hidden';
 		if (isFailure) {
-			this.cardElement.classList.toggle('failure');
-			setTimeout(() => {
-				this.cardElement.classList.toggle('failure');
-			}, 900);
+			this.showFailure();
 		}
+	}
+
+	showFailure() {
+		this.cardElement.classList.add('failure');
+		setTimeout(() => {
+			this.cardElement.classList.remove('failure');
+		}, 300);
 	}
 
 	toggleCardVisibility(isFailure) {
@@ -111,15 +119,20 @@ class CardSetBase {
 		}
 	}
 
-	// generates one card, each derived class will implement its own factory
-	makeOneCard() { }
+	isAllFound() {
+		return !this.cards.some(card => !card.isFound());
+	}
+
+	findCard(predicate) {
+		return this.cards.find(predicate);
+	}
+
+	// // generates one card, each derived class will implement its own factory
+	// makeOneCard() { }
 
 
-	// returns true if two cards are from the same paire (i.e. has the same innerHTML)
-	cardCmp(cardA, cardB) { }
-
-	// sets card as found by manipulating the DOM and add them to the foundCards array
-	validate(card) { }
+	// // returns true if two cards are from the same paire (i.e. has the same innerHTML)
+	// cardCmp(cardA, cardB) { }
 
 	logCards() {
 		console.log(`CARDS LEN = ${this.cards.length}`);
@@ -142,7 +155,7 @@ class RandomNbrCardSet extends CardSetBase {
 		super(nbOfPairs);
 	}
 
-	static cardCmp(cardA, cardB) {
+	cardCmp(cardA, cardB) {
 		// console.log('CMP FUNCTION between:', cardA, cardB);
 		const valueA = cardA.cardElement.querySelector('p').innerHTML;
 		const valueB = cardB.cardElement.querySelector('p').innerHTML;
