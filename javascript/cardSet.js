@@ -19,17 +19,9 @@ class Card {
 		}
 	}
 
-	isFound() {
-		return this.state.found;
-	}
-
-	getElement() {
-		return this.cardElement;
-	}
-
-	getSneakPeakState() {
-		return this.state.sneakPeak;
-	}
+	isFound() {	return this.state.found; }
+	getElement() {	return this.cardElement; }
+	getSneakPeakState() {	return this.state.sneakPeak; }
 
 	setSneakPeak() {
 		this.state.sneakPeak = true;
@@ -114,7 +106,7 @@ class CardSetBase {
 	// makes as many card as nbOfPairs times 2 and store them in the cards array
 	populateCardSet(nbOfPairs) {
 		for (let pair = 0; pair < nbOfPairs; pair++) {
-			const cardElements = this.makeOneCard();
+			const cardElements = this.makeOnePair();
 			this.cards.push(cardElements[0], cardElements[1]);
 		}
 	}
@@ -128,11 +120,17 @@ class CardSetBase {
 	}
 
 	// // generates one card, each derived class will implement its own factory
-	// makeOneCard() { }
+	// makeOnePair() { }
 
 
 	// // returns true if two cards are from the same paire (i.e. has the same innerHTML)
 	// cardCmp(cardA, cardB) { }
+
+	revealAllCards() {
+		for (const card of this.cards) {
+			card.revealCard();
+		}
+	}
 
 	logCards() {
 		console.log(`CARDS LEN = ${this.cards.length}`);
@@ -164,7 +162,7 @@ class RandomNbrCardSet extends CardSetBase {
 		return valueA === valueB;
 	}
 
-	makeOneCard() {
+	makeOnePair() {
 		let value = Math.floor(Math.random() * 10000);
 		// implement do while to make sure cards don't have same value twice
 		// do  {

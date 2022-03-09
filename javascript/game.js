@@ -152,7 +152,7 @@ class Game {
 	/* TIMER MANIPULATIONS       -----------------------------------------------*/
 
 	startTimer() {
-		this.countdown.start(16, () => {
+		this.countdown.start(2, () => {
 			this.timerCallback()
 		});
 	}
@@ -172,9 +172,9 @@ class Game {
 
 	endGame(hasWin) {
 		this.countdown.stop();
+		this.cardSet.revealAllCards();
 		if (hasWin && hasWin === 'win') {
 			this.timerElement.classList.add('countdown-win');
-			console.log('WIN!');
 		} else {
 			console.log('GAME OVER');
 		}
