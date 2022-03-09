@@ -24,12 +24,12 @@ class Card {
 	getElement() {	return this.cardElement; }
 	getSneakPeakState() {	return this.state.sneakPeak; }
 
-	setSneakPeak() {
+	setSneakPeak(time) {
 		this.state.sneakPeak = true;
 		this.revealCard();
 		this.sneakPeakTimeout = setTimeout(() => {
 			this.unsetSneakPeak();
-		}, 1000);
+		}, time);
 	}
 
 	unsetSneakPeak() {

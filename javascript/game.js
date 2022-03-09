@@ -31,9 +31,11 @@ class Grid {
 */
 
 class Game {
-	constructor(level) {
+	constructor(difficulty) {
 		document.addEventListener('click', (event) => { this.clickHandler(event) });
 		this.timerBip = new Audio('./media/audio/bip.mp3');
+		this.successSound = new Audio('./media/audio/success.mp3');
+		this.failSound = new Audio('./media/audio/fail.mp3');
 		this.timerElement = document.querySelector('#tourTimer');
 		this.scoreElement = document.querySelector('#score');
 
@@ -43,8 +45,11 @@ class Game {
 			soundOn: true,
 			timeOver: false,
 			score: 0,
-			lvl: level,
 			win: false
+		}
+		this.rules = {
+			timeToAssociateCards: 1000 / difficulty,
+			tourDuration: 30 /difficulty
 		}
 
 		this.countdown = new Countdown();
@@ -72,7 +77,7 @@ class Game {
 				elem.getElement() === event.target
 			);
 			if (clickedCard && !clickedCard.getSneakPeakState()) {
-				clickedCard.setSneakPeak();
+				clickedCard.setSneakPeak(this.rules.timeToAssociateCards);
 				this.addToGuess(clickedCard);
 			}
 		}
@@ -94,7 +99,8 @@ class Game {
 	waitForSecondCard() {
 		this.guessTimeoutId = setTimeout(() => {
 			this.abortGuess(true);
-		}, 1500);
+			console.log('ABORD');
+		}, this.rules.timeToAssociateCards);
 	}
 
 	clearWaiting() {
@@ -106,6 +112,7 @@ class Game {
 
 	abortGuess(isFailure) {
 		if (isFailure) {
+			this.failSound.play().catch(() => {});
 			this.guessCouple.forEach(card => {
 				card.unsetSneakPeak();
 				setTimeout(() => {
@@ -123,6 +130,7 @@ class Game {
 	manageCorrectGuess() {
 		clearTimeout(this.guessTimeoutId);
 		this.guessTimeoutId = null;
+		this.successSound.play().catch(() => {});
 
 		this.guessCouple.forEach(card => card.setCardAsFound())
 		this.incrementScore();
@@ -197,7 +205,11 @@ class Game {
 		this.cardSet.revealAllCards();
 	}
 
-	setVolume(muted) {this.timerBip.muted = muted}
+	setVolume(muted) {
+		this.successSound.muted = muted
+		this.failSound.muted = muted
+		this.timerBip.muted = muted
+	}
 
 	renderTime(remainingSeconds, timeStr) {
 		if (remainingSeconds >= 0) {
