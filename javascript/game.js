@@ -49,7 +49,7 @@ class Game {
 
 		this.countdown = new Countdown();
 		this.grid = new Grid();
-		this.cardSet = new RandomNbrCardSet(2);
+		this.cardSet = new RandomNbrCardSet(8);
 
 		// this.cardSet.logCards();
 		// this.setCardsInGridRandomly();
@@ -79,11 +79,14 @@ class Game {
 	}
 
 	addToGuess(card) {
-		this.guessCouple.push(card);
-		this.guessCouple.length < 2 ? this.waitForSecondCard() : this.checkGuess(card);
+		if (this.guessCouple.length < 2) {
+			this.guessCouple.push(card);
+			this.guessCouple.length < 2 ? this.waitForSecondCard() : this.checkGuess();
+		}
 	}
 
 	checkGuess() {
+		this.clearWaiting();
 		const sameCards = this.cardSet.cardCmp(this.guessCouple[0], this.guessCouple[1]);
 		sameCards ? this.manageCorrectGuess() : this.abortGuess(true);
 	}
@@ -91,7 +94,7 @@ class Game {
 	waitForSecondCard() {
 		this.guessTimeoutId = setTimeout(() => {
 			this.abortGuess(true);
-		}, 1000);
+		}, 1500);
 	}
 
 	clearWaiting() {
@@ -109,10 +112,12 @@ class Game {
 					if (!this.state.timeOver) {
 						card.hideCard(true);
 					}
+					this.guessCouple = [];
 				}, 800);
 			})
+		}	 else {
+			this.guessCouple = [];
 		}
-		this.guessCouple = [];
 	}
 
 	manageCorrectGuess() {
@@ -160,7 +165,7 @@ class Game {
 	/* TIMER MANIPULATIONS       -----------------------------------------------*/
 
 	startTimer() {
-		this.countdown.start(15, () => {
+		this.countdown.start(121, () => {
 			this.timerCallback()
 		});
 	}
@@ -199,7 +204,7 @@ class Game {
 			if (remainingSeconds < 25) {
 				this.timerElement.classList.toggle('countdown-reach-limit');
 				// play bip warning the end ofcountdown
-				if (!this.timerBip.muted && remainingSeconds <= 10) {
+				if (!this.timerBip?.muted && remainingSeconds <= 10) {
 					this.timerBip.play().catch((e) => {});
 				}
 			}
