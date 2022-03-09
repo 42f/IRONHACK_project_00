@@ -9,9 +9,10 @@
 
 
 class Card {
-	constructor(content) {
+	constructor(pairId, content) {
 		this.cardElement = this.generateCardElement(content);
 		this.sneakPeakTimeout = null;
+		this.pairId = pairId;
 		this.state = {
 			sneakPeak: false,
 			hidden: true,
@@ -32,24 +33,11 @@ class Card {
 	}
 
 	unsetSneakPeak() {
-		this.state.sneakPeak = false;
 		if (this.sneakPeakTimeout) {
 			clearTimeout(this.sneakPeakTimeout);
-			this.sneakPeakTimeout = null;
 		}
-	}
-
-	generateCardElement(content) {
-		const cardElement = document.createElement('div');
-		const pElement = cardElement.appendChild(document.createElement('p'));
-		cardElement.classList.add('card');
-		pElement.innerText = content;
-		pElement.classList.add('card-content');
-		pElement.style.visibility = 'hidden';
-		cardElement.style.animationDuration = `${Math.round(50 + Math.random() * 250).toString()}ms`;
-		cardElement.style.animationDelay = `${Math.round(50 + Math.random() * 750).toString()}ms`;
-
-		return cardElement;
+		this.sneakPeakTimeout = null;
+		this.state.sneakPeak = false;
 	}
 
 	// shows card to user by manipulating the DOM
@@ -84,6 +72,19 @@ class Card {
 		this.cardElement.classList.toggle('success');
 	}
 
+	generateCardElement(content) {
+		const cardElement = document.createElement('div');
+		const pElement = cardElement.appendChild(document.createElement('p'));
+		cardElement.classList.add('card');
+		pElement.innerHTML = content;
+		pElement.classList.add('card-content');
+		pElement.style.visibility = 'hidden';
+		cardElement.style.animationDuration = `${Math.round(250 + Math.random() *750).toString()}ms`;
+		cardElement.style.animationDelay = `${Math.round(50 + Math.random() * 750).toString()}ms`;
+
+		return cardElement;
+	}
+
 }
 
 
@@ -99,14 +100,14 @@ class Card {
 class CardSetBase {
 	constructor(nbOfPairs) {
 		this.cards = [];
+		this.valuesSet = [];
 		this.populateCardSet(nbOfPairs);
-		// this.setAllEventListenner();
 	}
 
 	// makes as many card as nbOfPairs times 2 and store them in the cards array
 	populateCardSet(nbOfPairs) {
-		for (let pair = 0; pair < nbOfPairs; pair++) {
-			const cardElements = this.makeOnePair();
+		for (let pairId = 0; pairId < nbOfPairs; pairId++) {
+			const cardElements = this.makeOnePair(pairId);
 			this.cards.push(cardElements[0], cardElements[1]);
 		}
 	}
@@ -122,12 +123,17 @@ class CardSetBase {
 	// // generates one card, each derived class will implement its own factory
 	// makeOnePair() { }
 
+	// // generate values for cards
+	// populateValueSet(nbOfPairs) { }
 
 	// // returns true if two cards are from the same paire (i.e. has the same innerHTML)
-	// cardCmp(cardA, cardB) { }
+	cardCmp(cardA, cardB) {
+		return cardA.pairId === cardB.pairId;
+	 }
 
 	revealAllCards() {
 		for (const card of this.cards) {
+			card.unsetSneakPeak()
 			card.revealCard();
 		}
 	}
@@ -147,26 +153,24 @@ class CardSetBase {
 ===================================================================
 */
 
-
 class RandomNbrCardSet extends CardSetBase {
 	constructor(nbOfPairs) {
 		super(nbOfPairs);
 	}
 
-	cardCmp(cardA, cardB) {
-		// console.log('CMP FUNCTION between:', cardA, cardB);
-		const valueA = cardA.cardElement.querySelector('p').innerHTML;
-		const valueB = cardB.cardElement.querySelector('p').innerHTML;
-		console.log(`compare -> ${valueA} / ${valueB}`);
+	// populateValueSet(nbOfPairs) {
+	// 	for (let i = 0; i < nbOfPairs; i++) {
+	// 		let value;
+	// 		do {
+	// 			value = Math.floor(Math.random() * 10000);
+	// 		} while(this.valuesSet.some(v => value === v))
+	// 		this.valuesSet.push(value);
+	// 	}
+	// }
 
-		return valueA === valueB;
-	}
-
-	makeOnePair() {
-		let value = Math.floor(Math.random() * 10000);
-		// implement do while to make sure cards don't have same value twice
-		// do  {
-		// } while (this.)
-		return [new Card(value), new Card(value)];
+	makeOnePair(pairId) {
+		// const value = this.valuesSet.pop();
+		const value = Math.floor(Math.random() * 10000);
+		return [new Card(pairId, value), new Card(pairId, value)];
 	}
 }
