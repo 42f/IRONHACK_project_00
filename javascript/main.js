@@ -11,9 +11,12 @@
 
 const state = {
 	displayInfos: false,
-	volume: false,
+	volume: true,
 	splash: false
 }
+
+const game = new Game(1);
+game.startGame();
 
 // const audioBip = document.querySelector('#audio-bip');
 // console.log(audioBip.innerHTML);
@@ -38,18 +41,17 @@ function toggleVolume() {
 	state.volume = !state.volume;
 	const mutted = document.querySelector('#muteOn');
 	const unmutted = document.querySelector('#muteOff');
+	if (game) {
+		game.setVolume(!state.volume);
+	}
 	if (state.volume) {
-		// audioBip.muted = false;
 		setVisibility(unmutted, 'visible')
 		setVisibility(mutted, 'hidden')
 	} else {
-		// audioBip.muted = true;
 		setVisibility(mutted, 'visible')
 		setVisibility(unmutted, 'hidden')
 	}
 }
-const game = new Game(1);
-game.startGame();
 
 function startGame(event) {
 	// const game = new Game(event.target.dataset.lvl);

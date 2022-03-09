@@ -33,30 +33,27 @@ class Grid {
 class Game {
 	constructor(level) {
 		document.addEventListener('click', (event) => { this.clickHandler(event) });
-		// this.timerBip = new Audio('./media/audio/bip.mp3');
+		this.timerBip = new Audio('./media/audio/bip.mp3');
 		this.timerElement = document.querySelector('#tourTimer');
 		this.scoreElement = document.querySelector('#score');
-		this.countdown = new Countdown();
-		this.guessCouple = [];
+
 		this.guessTimeoutId = null;
+		this.guessCouple = [];
 		this.state = {
+			soundOn: true,
 			timeOver: false,
 			score: 0,
 			lvl: level,
 			win: false
 		}
+
+		this.countdown = new Countdown();
 		this.grid = new Grid();
 		this.cardSet = new RandomNbrCardSet(2);
 
 		// this.cardSet.logCards();
 		// this.setCardsInGridRandomly();
 		this.setCardsInGridInOrder();
-
-		// setTimeout(() => {
-		// 	for (let card of this.grid.cards) {
-		// 		card.hideCard(false);
-		// 	}
-		// }, 1200);
 	}
 
 	/* USER INTERACTIONS         -----------------------------------------------*/
@@ -194,13 +191,17 @@ class Game {
 		this.cardSet.revealAllCards();
 	}
 
+	setVolume(muted) {this.timerBip.muted = muted}
+
 	renderTime(remainingSeconds, timeStr) {
 		if (remainingSeconds >= 0) {
 			this.timerElement.innerText = timeStr;
 			if (remainingSeconds < 25) {
 				this.timerElement.classList.toggle('countdown-reach-limit');
 				// play bip warning the end ofcountdown
-				// this.timerBip.play();
+				if (!this.timerBip.muted && remainingSeconds <= 10) {
+					this.timerBip.play().catch((e) => {});
+				}
 			}
 		} else {
 			this.timerElement.classList.add('countdown-reach-limit');

@@ -62,10 +62,6 @@ class Card {
 		}, 300);
 	}
 
-	toggleCardVisibility(isFailure) {
-		this.state.hidden ? this.revealCard(isFailure) : this.hideCard();
-	}
-
 	setCardAsFound() {
 		this.revealCard();
 		this.state.found = true;
