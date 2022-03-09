@@ -96,6 +96,7 @@ header::-webkit-scrollbar {
 }
 
 .circle {
+  user-select: none;
   font-family: "Courier New", Courier, monospace;
   font-size: 1.8rem;
   width: 110px;
@@ -154,6 +155,7 @@ header::-webkit-scrollbar {
 /* CARDS  ---------------------------------------------*/
 
 .card {
+  user-select: none;
   margin: 30px 30px;
   height: 10vh;
   width: 10vh;
@@ -258,9 +260,10 @@ header::-webkit-scrollbar {
   align-items: center;
   flex-direction: column;
   justify-content: center;
+  gap: 10vh;
+  height: 92%;
 
-  background-color: seagreen;
-  margin: unset;
+  background: linear-gradient(253deg, #6f45e1, #1797d2, #89d4cf);
 
   visibility: hidden;
 }
@@ -293,21 +296,18 @@ header::-webkit-scrollbar {
 }
 
 #splash .button {
+  user-select: none;
+  font-family: 'Courier New', Courier, monospace;
   display: flex;
   justify-content: center;
   align-items: center;
 
-  margin: 15% 0;
-  padding: 5% 0;
-  width: 35%;
+  min-width: 300px;
 
-  border: solid 2px black;
-  background-color: crimson;
-  border-radius: 25px;
+  border: 1px solid #e8e8e8;
+  border-radius: 20px;
 
-  font-size: 3rem;
+  font-size: 2.5rem;
   color: white;
   text-align: center;
 }
-
-/* FOOTER ---------------------------------------------*/
