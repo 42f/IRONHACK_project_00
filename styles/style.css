@@ -102,7 +102,7 @@ header::-webkit-scrollbar {
   height: 110px;
   margin: 5px 25px;
   border-radius: 50%;
-  border: solid 2px grey;
+  border: solid 20px rgba(180, 180, 180, 0.479);
 
   display: flex;
   flex-shrink: 0;
@@ -110,11 +110,15 @@ header::-webkit-scrollbar {
   align-items: center;
   border-radius: 50%;
   background: #f2f2f2;
-  box-shadow: inset 20px 20px 45px #b6b6b6, inset -20px -20px 45px #ffffff;
+  box-shadow: inset 20px 20px 45px #d1d1d1, inset -20px -20px 45px #ffffff;
 }
 
-.timer-reach-limit {
-  border: solid 2px crimson;
+.countdown-win {
+  border: solid 20px mediumseagreen;
+}
+
+.countdown-reach-limit {
+  border: solid 20px crimson;
   color: crimson;
 }
 
