@@ -59,7 +59,7 @@ class Card {
 		this.cardElement.classList.add('failure');
 		setTimeout(() => {
 			this.cardElement.classList.remove('failure');
-		}, 300);
+		}, 200);
 	}
 
 	setCardAsFound() {

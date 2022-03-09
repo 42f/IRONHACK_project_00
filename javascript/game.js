@@ -32,7 +32,10 @@ class Grid {
 
 class Game {
 	constructor(difficulty) {
+		difficulty = parseInt(difficulty) || 1;
+
 		document.addEventListener('click', (event) => { this.clickHandler(event) });
+
 		this.timerBip = new Audio('./media/audio/bip.mp3');
 		this.successSound = new Audio('./media/audio/success.mp3');
 		this.failSound = new Audio('./media/audio/fail.mp3');
@@ -48,15 +51,14 @@ class Game {
 			win: false
 		}
 		this.rules = {
-			timeToAssociateCards: 1000 / difficulty,
-			tourDuration: 30 /difficulty
+			guessTime: Math.floor(1000 / difficulty),
+			tourTime: Math.floor(60 /difficulty)
 		}
 
 		this.countdown = new Countdown();
 		this.grid = new Grid();
 		this.cardSet = new RandomNbrCardSet(8);
 
-		// this.cardSet.logCards();
 		// this.setCardsInGridRandomly();
 		this.setCardsInGridInOrder();
 	}
@@ -77,7 +79,7 @@ class Game {
 				elem.getElement() === event.target
 			);
 			if (clickedCard && !clickedCard.getSneakPeakState()) {
-				clickedCard.setSneakPeak(this.rules.timeToAssociateCards);
+				clickedCard.setSneakPeak(this.rules.guessTime);
 				this.addToGuess(clickedCard);
 			}
 		}
@@ -99,8 +101,7 @@ class Game {
 	waitForSecondCard() {
 		this.guessTimeoutId = setTimeout(() => {
 			this.abortGuess(true);
-			console.log('ABORD');
-		}, this.rules.timeToAssociateCards);
+		}, this.rules.guessTime);
 	}
 
 	clearWaiting() {
@@ -112,15 +113,15 @@ class Game {
 
 	abortGuess(isFailure) {
 		if (isFailure) {
-			this.failSound.play().catch(() => {});
 			this.guessCouple.forEach(card => {
 				card.unsetSneakPeak();
 				setTimeout(() => {
-					if (!this.state.timeOver) {
+					if (!this.state.timeOver && !card.isFound()) {
+						this.failSound.play().catch(() => {});
 						card.hideCard(true);
 					}
 					this.guessCouple = [];
-				}, 800);
+				}, 200);
 			})
 		}	 else {
 			this.guessCouple = [];
@@ -132,7 +133,10 @@ class Game {
 		this.guessTimeoutId = null;
 		this.successSound.play().catch(() => {});
 
-		this.guessCouple.forEach(card => card.setCardAsFound())
+		this.guessCouple.forEach(card => {
+			card.setCardAsFound()
+			card.revealCard()
+		})
 		this.incrementScore();
 		this.guessCouple = [];
 		this.nextTour();
@@ -146,7 +150,6 @@ class Game {
 	nextTour() {
 		this.countdown.stop();
 		this.startTimer();
-		console.log('next tour', this.cardSet.isAllFound());
 		if (this.cardSet.isAllFound()) {
 			this.endGame('win');
 		}
@@ -173,7 +176,7 @@ class Game {
 	/* TIMER MANIPULATIONS       -----------------------------------------------*/
 
 	startTimer() {
-		this.countdown.start(121, () => {
+		this.countdown.start(this.rules.tourTime, () => {
 			this.timerCallback()
 		});
 	}
@@ -214,7 +217,7 @@ class Game {
 	renderTime(remainingSeconds, timeStr) {
 		if (remainingSeconds >= 0) {
 			this.timerElement.innerText = timeStr;
-			if (remainingSeconds < 25) {
+			if (remainingSeconds < 10) {
 				this.timerElement.classList.toggle('countdown-reach-limit');
 				// play bip warning the end ofcountdown
 				if (this.timerBip && !this.timerBip.muted && remainingSeconds <= 10) {
