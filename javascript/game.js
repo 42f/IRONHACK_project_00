@@ -53,17 +53,18 @@ class Game {
 		}
 		this.rules = {
 			guessTime: Math.floor(1000 / difficulty),
-			// tourTime: Math.floor(60 /difficulty)
-			tourTime: Math.floor(6 /difficulty)
+			tourTime: Math.floor(60 /difficulty)
+			// tourTime: Math.floor(6 /difficulty)
 		}
 
 		this.countdown = new Countdown();
 		this.grid = new Grid();
 		const cardSetSize = this.computeCardSetSize();
-		this.cardSet = new RandomNbrCardSet(cardSetSize);
+		this.cardSet = new randomColorCardSet(cardSetSize);
+		// this.cardSet = new RandomNbrCardSet(cardSetSize);
 
-		this.setCardsInGridRandomly();
-		// this.setCardsInGridInOrder();
+		// this.setCardsInGridRandomly();
+		this.setCardsInGridInOrder();
 	}
 
 	/* USER INTERACTIONS         -----------------------------------------------*/
@@ -205,6 +206,16 @@ class Game {
 	}
 
 	startGame() {
+		setTimeout(() => {
+			const cardSetNameElement = document.querySelector('.card-set-name');
+			cardSetNameElement.classList.add('reveal');
+			cardSetNameElement.innerText = '';
+			cardSetNameElement.innerText = `Playing: ${this.cardSet.getName()}`;
+			setTimeout(() => {
+				cardSetNameElement.classList.add('hide');
+				cardSetNameElement.classList.remove('reveal');
+			},4500);
+		}, 1000);
 		this.startTimer();
 		return new Promise((resolve, reject) => {
 			setInterval(() => {

@@ -378,3 +378,50 @@ header::-webkit-scrollbar {
     font-size: 7rem;
   }
 }
+
+/* FOOTER ------------------------------------------------------------*/
+
+footer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+footer .card-set-name {
+  padding-top: 5px;
+  font-family: 'Courier New', Courier, monospace;
+  position: fixed;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: rgb(201, 201, 201);
+  bottom: -30px;
+  height: 25px;
+  width: 100%;
+  text-align: center;
+}
+
+.card-set-name.reveal {
+  animation:ease-out 1s slide-up;
+  animation-fill-mode:forwards;
+}
+.card-set-name.hide {
+  animation:ease-out 1s slide-down;
+  animation-fill-mode:forwards;
+}
+
+@keyframes slide-up {
+  0% {
+    bottom: -25px;
+  }
+  100% {
+    bottom: 0px;
+  }
+}
+
+@keyframes slide-down {
+  0% {
+    bottom: 0px;
+  }
+  100% {
+    bottom: -30px;
+  }
+}
