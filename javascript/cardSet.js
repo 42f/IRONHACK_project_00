@@ -12,6 +12,7 @@ class Card {
 	constructor(pairId, content) {
 		this.cardElement = this.generateCardElement(content);
 		this.sneakPeakTimeout = null;
+		this.successFoundCallback = null;
 		this.pairId = pairId;
 		this.state = {
 			sneakPeak: false,
@@ -21,6 +22,7 @@ class Card {
 	}
 
 	isFound() { return this.state.found; }
+	setSuccessCallback(cb) { this.successFoundCallback = cb; }
 	getElement() { return this.cardElement; }
 	getSneakPeakState() { return this.state.sneakPeak; }
 
@@ -236,22 +238,23 @@ class randomChineseWords extends CardSetBase {
 	constructor(nbOfPairs) {
 		super();
 		this.set = [
-			{ char: '得', pinyin: ' dé ', },
-			{ char: '就', pinyin: ' jiù ', },
-			{ char: '那', pinyin: ' nà ', },
-			{ char: '要', pinyin: ' yào ', },
-			{ char: '下', pinyin: ' xià ', },
-			{ char: '以', pinyin: ' yǐ ', },
-			{ char: '生', pinyin: ' shēng ', },
-			{ char: '會', pinyin: ' huì ', },
-			{ char: '会', pinyin: ' huì ', },
-			{ char: '自', pinyin: ' zì ', },
-			{ char: '著', pinyin: ' zhù ', },
-			{ char: '樣', pinyin: ' yàng ', },
-			{ char: '語', pinyin: ' yǔ ', },
-			{ char: '言', pinyin: ' yán ', },
-			{ char: '比', pinyin: ' bǐ ', },
-			{ char: '像', pinyin: ' xiàng ', },
+			{ char: '得', pinyin: ' dé ', vocal: new Audio('https://www.archchinese.com/swf/de2.mp3')},
+			{ char: '你', pinyin: ' nǐ ', vocal: new Audio('https://www.archchinese.com/swf/ni3.mp3')},
+			{ char: '好', pinyin: ' hǎo ', vocal: new Audio('https://www.archchinese.com/swf/hao3.mp3')},
+			{ char: '就', pinyin: ' jiù ', vocal: new Audio('https://www.archchinese.com/swf/jiu4.mp3')},
+			{ char: '那', pinyin: ' nà ', vocal: new Audio('https://www.archchinese.com/audio/na4.mp3')},
+			{ char: '要', pinyin: ' yào ', vocal: new Audio('https://www.archchinese.com/audio/yao4.mp3')},
+			{ char: '下', pinyin: ' xià ', vocal: new Audio('https://www.archchinese.com/audio/xia4.mp3')},
+			{ char: '以', pinyin: ' yǐ ', vocal: new Audio('https://www.archchinese.com/audio/yi3.mp3')},
+			{ char: '生', pinyin: ' shēng ', vocal: new Audio('https://www.archchinese.com/audio/sheng1.mp3')},
+			{ char: '會', pinyin: ' huì ', vocal: new Audio('https://www.archchinese.com/swf/hui4.mp3')},
+			{ char: '自', pinyin: ' zì ', vocal: new Audio('https://www.archchinese.com/audio/zi4.mp3')},
+			{ char: '著', pinyin: ' zhù ', vocal: new Audio('https://www.archchinese.com/audio/zhu4.mp3')},
+			{ char: '樣', pinyin: ' yàng ', vocal: new Audio('https://www.archchinese.com/audio/yang4.mp3')},
+			{ char: '語', pinyin: ' yǔ ', vocal: new Audio('https://www.archchinese.com/audio/yu3.mp3')},
+			{ char: '言', pinyin: ' yán ', vocal: new Audio('https://www.archchinese.com/audio/yan2.mp3')},
+			{ char: '比', pinyin: ' bǐ ', vocal: new Audio('https://www.archchinese.com/swf/bi3.mp3')},
+			{ char: '像', pinyin: ' xiàng ', vocal: new Audio('https://www.archchinese.com/audio/xiang4.mp3')},
 		]
 		this.populateCardSet(nbOfPairs);
 		this.setEachCardFontLarger();
@@ -267,14 +270,12 @@ class randomChineseWords extends CardSetBase {
 		for (let pairId = 0; pairId < nbOfPairs && this.set.length; pairId++) {
 			const value = this.generateValue();
 			const pair = this.makeOnePair(pairId, value.char);
-			this.setSuccessCallback(pair[0], value);
-			this.cards.push(pair[0], pair[1]);
-		}
-	}
 
-	setSuccessCallback(card, value) {
-		card.successFoundCallback = () => {
-			console.log(value.pinyin);
+			pair[0].setSuccessCallback(() => {
+					console.log(value.pinyin);
+					value.vocal.play().catch(() => {})
+			});
+			this.cards.push(pair[0], pair[1]);
 		}
 	}
 
