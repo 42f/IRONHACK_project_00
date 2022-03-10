@@ -56,7 +56,6 @@ function renderVolumeBtn() {
 
 function restartGame() {
 	if (currentGame) {
-		currentGame.destructor();
 		delete currentGame;
 	}
 	toggleReplayScreen();

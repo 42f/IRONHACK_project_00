@@ -12,17 +12,13 @@
 class Grid {
 	constructor() {
 		this.gridElement = document.querySelector('#grid');
+		this.gridElement.innerHTML = '';
 		this.cards = [];
 	}
 
 	addCard(cardElement) {
 		const newLen = this.cards.push(cardElement);
 		this.gridElement.appendChild(this.cards[newLen - 1].getElement());
-	}
-
-	cleanUp() {
-		this.cards.forEach(card => delete card.getElement());
-		this.gridElement.innerHTML = '';
 	}
 }
 
@@ -58,8 +54,8 @@ class Game {
 		}
 		this.rules = {
 			guessTime: Math.floor(1000 / difficulty),
-			// tourTime: Math.floor(60 /difficulty)
-			tourTime: Math.floor(6 /difficulty)
+			tourTime: Math.floor(60 /difficulty)
+			// tourTime: Math.floor(6 /difficulty)
 		}
 
 		this.countdown = new Countdown();
@@ -160,10 +156,6 @@ class Game {
 		if (this.cardSet.isAllFound()) {
 			this.endGame('win');
 		}
-	}
-
-	destructor() {
-		this.grid.cleanUp();
 	}
 
 	/* GRID MANIPULATION METHODS -----------------------------------------------*/

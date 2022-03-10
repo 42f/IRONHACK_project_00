@@ -12,6 +12,12 @@ h1 {
   font-size: 3rem;
 }
 
+h1 a {
+  cursor: default;
+  text-decoration: none;
+  color: black;
+}
+
 @media (min-width: 600px) {
   h1 {
     font-size: 2.5rem;
@@ -333,8 +339,15 @@ header::-webkit-scrollbar {
 
 #replay .button {
   padding: 15px 40px;
-  border: solid 2px  ;
+  border: solid 2px white;
   margin: 0 10%;
+}
+
+#replay .button.less-important {
+  color: grey;
+  background-color: rgb(58, 58, 58);
+  border: solid 2px grey;
+  margin-bottom: 90px;
 }
 
 .game-result {
