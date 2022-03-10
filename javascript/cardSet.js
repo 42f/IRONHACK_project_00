@@ -170,7 +170,7 @@ class RandomNbrCardSet extends CardSetBase {
 class randomColorCardSet extends CardSetBase {
 	constructor(nbOfPairs) {
 		super();
-		this.colors = [
+		this.set = [
 			'crimson',
 			'black',
 			'silver',
@@ -206,12 +206,12 @@ class randomColorCardSet extends CardSetBase {
 	}
 
 	generateValue() {
-		const randomIndex = Math.floor(Math.random() * this.colors.length);
-		return this.colors.splice(randomIndex, 1)[0];
+		const randomIndex = Math.floor(Math.random() * this.set.length);
+		return this.set.splice(randomIndex, 1)[0];
 	}
 
 	populateCardSet(nbOfPairs) {
-		for (let pairId = 0; pairId < nbOfPairs && this.colors.length; pairId++) {
+		for (let pairId = 0; pairId < nbOfPairs && this.set.length; pairId++) {
 
 			const value = this.generateValue();
 			const pair = this.makeOnePair(pairId, value);
@@ -229,3 +229,48 @@ class randomColorCardSet extends CardSetBase {
 
 
 
+class randomChineseWords extends CardSetBase {
+	constructor(nbOfPairs) {
+		super();
+		this.set = [
+			'得',
+			'就',
+			'那',
+			'要',
+			'下',
+			'以',
+			'生',
+			'會',
+			'会',
+			'自',
+			'著',
+			'樣',
+			'語',
+			'言',
+			'比',
+			'像',
+		]
+		this.populateCardSet(nbOfPairs);
+		this.name = 'Basic Madarin Characters'
+	}
+
+	generateValue() {
+		const randomIndex = Math.floor(Math.random() * this.set.length);
+		return this.set.splice(randomIndex, 1)[0];
+	}
+
+	populateCardSet(nbOfPairs) {
+		for (let pairId = 0; pairId < nbOfPairs && this.set.length; pairId++) {
+			const value = this.generateValue();
+			const pair = this.makeOnePair(pairId, value);
+			this.cards.push(pair[0], pair[1]);
+		}
+		this.cards.forEach(card =>
+			card.getElement().querySelector('p').style.fontSize = '3.5rem'
+		);
+	}
+
+	makeOnePair(pairId, value) {
+		return [new Card(pairId, value), new Card(pairId, value)];
+	}
+}
