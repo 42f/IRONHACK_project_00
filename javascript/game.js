@@ -69,9 +69,8 @@ class Game {
 	revealCardSetName() {
 		setTimeout(() => {
 			const cardSetNameElement = document.querySelector('.card-set-name');
-			cardSetNameElement.classList.add('reveal');
-			cardSetNameElement.innerText = '';
 			cardSetNameElement.innerText = `Playing: ${this.cardSet.getName()}`;
+			cardSetNameElement.classList.add('reveal');
 			setTimeout(() => {
 				cardSetNameElement.classList.add('hide');
 				cardSetNameElement.classList.remove('reveal');
@@ -200,13 +199,11 @@ class Game {
 	}
 
 	computeCardSetSize() {
-		let col = 4;
-		let row = 4;
+		let nbOfCards = 16;
 		if (window.innerWidth < 670 || window.innerHeight < 800) {
-			col = 2;
-			row = 5;
+			nbOfCards = 10
 		}
-		return Math.floor((col * row) / 2);
+		return Math.floor(nbOfCards / 2);
 	}
 
 	/* TIMER MANIPULATIONS       -----------------------------------------------*/
@@ -264,8 +261,10 @@ class Game {
 	renderTime(remainingSeconds, timeStr) {
 		if (remainingSeconds >= 0) {
 			this.timerElement.innerText = timeStr;
+
 			if (remainingSeconds < 10) {
 				this.timerElement.classList.toggle('countdown-reach-limit');
+
 				// play bip warning the end ofcountdown
 				if (this.timerBip && !this.timerBip.muted && remainingSeconds <= 10) {
 					this.timerBip.play().catch((e) => { });
