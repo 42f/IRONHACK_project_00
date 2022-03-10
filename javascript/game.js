@@ -62,7 +62,6 @@ class Game {
 		this.cardSet = this.pickRandomCardSet(cardSetSize);
 
 		this.setCardsInGridRandomly();
-		// this.setCardsInGridInOrder();
 	}
 
 	/* GAME SETTINGS             -----------------------------------------------*/
@@ -83,8 +82,8 @@ class Game {
 	pickRandomCardSet(cardSetSize) {
 		const cardSets = [
 			() => new RandomNbrCardSet(cardSetSize),
-			() => new randomColorCardSet(cardSetSize),
 			() => new randomChineseWords(cardSetSize),
+			() => new randomColorCardSet(cardSetSize),
 		]
 
 		return cardSets[Math.floor(Math.random() * cardSets.length)]();
@@ -213,6 +212,7 @@ class Game {
 	/* TIMER MANIPULATIONS       -----------------------------------------------*/
 
 	startTimer() {
+		this.timerElement.classList.remove('countdown-reach-limit');
 		this.countdown.start(this.rules.tourTime, () => {
 			this.timerCallback()
 		});
@@ -249,10 +249,6 @@ class Game {
 			this.state.win = true;
 			this.timerElement.classList.remove('countdown-reach-limit');
 			this.timerElement.classList.add('countdown-win');
-			// toggleReplayScreen('won');
-		} else {
-			// toggleReplayScreen('lost');
-			console.log('GAME OVER');
 		}
 		this.clearWaiting();
 		this.countdown.stop();

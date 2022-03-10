@@ -63,6 +63,9 @@ class Card {
 	}
 
 	setCardAsFound() {
+		if (this.successFoundCallback) {
+			this.successFoundCallback();
+		}
 		this.revealCard();
 		this.state.found = true;
 		this.cardElement.classList.toggle('success');
@@ -233,24 +236,25 @@ class randomChineseWords extends CardSetBase {
 	constructor(nbOfPairs) {
 		super();
 		this.set = [
-			'得',
-			'就',
-			'那',
-			'要',
-			'下',
-			'以',
-			'生',
-			'會',
-			'会',
-			'自',
-			'著',
-			'樣',
-			'語',
-			'言',
-			'比',
-			'像',
+			{ char: '得', pinyin: ' dé ', },
+			{ char: '就', pinyin: ' jiù ', },
+			{ char: '那', pinyin: ' nà ', },
+			{ char: '要', pinyin: ' yào ', },
+			{ char: '下', pinyin: ' xià ', },
+			{ char: '以', pinyin: ' yǐ ', },
+			{ char: '生', pinyin: ' shēng ', },
+			{ char: '會', pinyin: ' huì ', },
+			{ char: '会', pinyin: ' huì ', },
+			{ char: '自', pinyin: ' zì ', },
+			{ char: '著', pinyin: ' zhù ', },
+			{ char: '樣', pinyin: ' yàng ', },
+			{ char: '語', pinyin: ' yǔ ', },
+			{ char: '言', pinyin: ' yán ', },
+			{ char: '比', pinyin: ' bǐ ', },
+			{ char: '像', pinyin: ' xiàng ', },
 		]
 		this.populateCardSet(nbOfPairs);
+		this.setEachCardFontLarger();
 		this.name = 'Basic Madarin Characters'
 	}
 
@@ -262,15 +266,26 @@ class randomChineseWords extends CardSetBase {
 	populateCardSet(nbOfPairs) {
 		for (let pairId = 0; pairId < nbOfPairs && this.set.length; pairId++) {
 			const value = this.generateValue();
-			const pair = this.makeOnePair(pairId, value);
+			const pair = this.makeOnePair(pairId, value.char);
+			this.setSuccessCallback(pair[0], value);
 			this.cards.push(pair[0], pair[1]);
 		}
-		this.cards.forEach(card =>
-			card.getElement().querySelector('p').style.fontSize = '3.5rem'
-		);
+	}
+
+	setSuccessCallback(card, value) {
+		card.successFoundCallback = () => {
+			console.log(value.pinyin);
+		}
+	}
+
+	setEachCardFontLarger() {
+		this.cards.forEach(card => {
+			card.getElement().querySelector('p').style.fontSize = '3.5rem';
+		});
 	}
 
 	makeOnePair(pairId, value) {
-		return [new Card(pairId, value), new Card(pairId, value)];
+		const cards = [new Card(pairId, value), new Card(pairId, value)];
+		return cards;
 	}
 }
