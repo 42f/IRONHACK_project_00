@@ -19,6 +19,11 @@ class Grid {
 		const newLen = this.cards.push(cardElement);
 		this.gridElement.appendChild(this.cards[newLen - 1].getElement());
 	}
+
+	cleanUp() {
+		this.cards.forEach(card => delete card.getElement());
+		this.gridElement.innerHTML = '';
+	}
 }
 
 
@@ -32,6 +37,7 @@ class Grid {
 
 class Game {
 	constructor(difficulty) {
+		console.log('CTOR HERE');
 		difficulty = parseInt(difficulty) || 1;
 
 		document.addEventListener('click', (event) => { this.clickHandler(event) });
@@ -52,7 +58,8 @@ class Game {
 		}
 		this.rules = {
 			guessTime: Math.floor(1000 / difficulty),
-			tourTime: Math.floor(60 /difficulty)
+			// tourTime: Math.floor(60 /difficulty)
+			tourTime: Math.floor(6 /difficulty)
 		}
 
 		this.countdown = new Countdown();
@@ -155,6 +162,10 @@ class Game {
 		}
 	}
 
+	destructor() {
+		this.grid.cleanUp();
+	}
+
 	/* GRID MANIPULATION METHODS -----------------------------------------------*/
 
 	setCardsInGridRandomly() {
@@ -193,6 +204,15 @@ class Game {
 
 	startGame() {
 		this.startTimer();
+		return new Promise((resolve, reject) => {
+			setInterval(() => {
+				if (this.state.timeOver && !this.state.win)	{
+					reject();
+				} else if (this.state.timeOver || this.state.win) {
+					resolve();
+				}
+			}, 1000);
+		});
 	}
 
 	endGame(hasWin) {
@@ -200,7 +220,9 @@ class Game {
 			this.state.win = true;
 			this.timerElement.classList.remove('countdown-reach-limit');
 			this.timerElement.classList.add('countdown-win');
+			// toggleReplayScreen('won');
 		} else {
+			// toggleReplayScreen('lost');
 			console.log('GAME OVER');
 		}
 		this.clearWaiting();

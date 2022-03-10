@@ -20,12 +20,10 @@
 			<img id="muteOff" src="./media/ico/ic-sound.svg" alt="muteOff icone">
 		</i>
 		<h1>Goldfish</h1>
-		<i id="info-btn"><img src="./media/ico/ic-vertical-menu.svg" alt="menu icone"></i>
+			<i><img id="btn-infos" src="./media/ico/ic-vertical-menu.svg" alt="menu icone"></i>
 	</nav>
 
-
 	<div class="modal" id="splash">
-
 		<!-- FOR MULTI PLAYER IMPLEMENTATION -->
 		<!-- <div class="players-selection">
 			<div class="player" data-lvl="-1"><i><img src="./media/ico/ic-remove.svg" alt="Remove one player"><img src="./media/ico/ic-player.svg" alt="Remove one player"></i></div>
@@ -33,10 +31,19 @@
 			<div class="player" data-lvl="1"><i><img src="./media/ico/ic-add.svg" alt="Add one player"><img src="./media/ico/ic-player.svg" alt="Add one player"></i></div>
 		</div> -->
 
-		<div class="button" data-lvl="1">easy 😄</div>
-		<div class="button" data-lvl="2">hard 🥲</div>
-		<div class="button" data-lvl="3">extreme 🙃</div>
+		<div class="button" id="btn-play" data-lvl="1">easy 😄</div>
+		<div class="button" id="btn-play" data-lvl="2">hard 🥲</div>
+		<div class="button" id="btn-play" data-lvl="3">extreme 🙃</div>
 	</div>
+
+	<div class="modal" id="replay">
+		<div class="game-result">
+			<p></p>
+		</div>
+		<div class="button" id="btn-replay">Play again 🤘</div>
+		<div class="button" id="btn-see-cards">See cards</div>
+	</div>
+
 	<div class="modal" id="infos">
 		<article>
 			<h3>Rules</h3>

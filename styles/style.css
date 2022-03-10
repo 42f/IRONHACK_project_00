@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,700;1,700&display=swap');
+
 body {
   background: #e0e0e0;
   margin: 0;
@@ -20,7 +22,7 @@ h1 {
 
 nav {
   position: fixed;
-
+  backdrop-filter: blur(5px);
   display: flex;
   flex-direction: row;
   justify-content: space-around;
@@ -208,12 +210,13 @@ header::-webkit-scrollbar {
 /* MODAL  ---------------------------------------------*/
 
 .modal {
+  backdrop-filter: blur(5px);
   position: fixed;
   z-index: 10;
   width: 100%;
   height: 100%;
   margin-top: 110px;
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: rgba(0, 0, 0, 0.7);
 }
 
 @media (min-width: 600px) {
@@ -221,6 +224,25 @@ header::-webkit-scrollbar {
     margin-top: 80px;
   }
 }
+
+.modal .button {
+  user-select: none;
+  font-family: 'Courier New', Courier, monospace;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  min-width: 300px;
+
+  border: 1px solid #e8e8e8;
+  border-radius: 20px;
+
+  font-size: 2.5rem;
+  color: white;
+  text-align: center;
+}
+
+/* INFOS --------------------------------------------*/
 
 #infos {
   color: white;
@@ -254,6 +276,8 @@ header::-webkit-scrollbar {
     font-size: 1.5rem;
   }
 }
+
+/* GAME MODE SELECTION --------------------------------*/
 
 #splash {
   display: flex;
@@ -295,19 +319,29 @@ header::-webkit-scrollbar {
   font-size: 4rem;
 }
 
-#splash .button {
-  user-select: none;
-  font-family: 'Courier New', Courier, monospace;
+/* GAME MODE SELECTION --------------------------------*/
+
+#replay {
   display: flex;
-  justify-content: center;
   align-items: center;
+  flex-direction: column;
+  justify-content: space-around;
+  height: 92%;
 
-  min-width: 300px;
+  visibility: hidden;
+}
 
-  border: 1px solid #e8e8e8;
-  border-radius: 20px;
+#replay .button {
+  padding: 15px 40px;
+  border: solid 2px  ;
+  margin: 0 10%;
+}
 
-  font-size: 2.5rem;
+.game-result {
+  user-select: none;
   color: white;
+  font-family: 'Courier Prime', monospace;
+  font-size: 12vw;
   text-align: center;
+  margin: 30px 15%;
 }
