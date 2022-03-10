@@ -53,7 +53,8 @@ class Game {
 		}
 		this.rules = {
 			guessTime: Math.floor(1000 / difficulty),
-			tourTime: Math.floor(60 /difficulty)
+			// tourTime: Math.floor(60 /difficulty)
+			tourTime: Math.floor(6 /difficulty)
 		}
 
 		this.countdown = new Countdown();

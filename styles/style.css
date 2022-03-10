@@ -339,7 +339,7 @@ header::-webkit-scrollbar {
   font-size: 4rem;
 }
 
-/* GAME MODE SELECTION --------------------------------*/
+/* GAME REPLAY SELECTION --------------------------------*/
 
 #replay {
   display: flex;
@@ -354,7 +354,7 @@ header::-webkit-scrollbar {
 #replay .button {
   padding: 15px 40px;
   border: solid 2px white;
-  margin: 0 10%;
+  margin: 20px 10px;
 }
 
 #replay .button.less-important {
@@ -368,7 +368,13 @@ header::-webkit-scrollbar {
   user-select: none;
   color: white;
   font-family: 'Courier Prime', monospace;
-  font-size: 12vw;
+  font-size: 4rem;
   text-align: center;
   margin: 30px 15%;
+}
+
+@media (min-width: 600px) {
+  .game-result {
+    font-size: 7rem;
+  }
 }
