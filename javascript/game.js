@@ -54,17 +54,26 @@ class Game {
 		this.rules = {
 			guessTime: Math.floor(1000 / difficulty),
 			tourTime: Math.floor(60 /difficulty)
-			// tourTime: Math.floor(6 /difficulty)
 		}
 
+		const cardSetSize = this.computeCardSetSize();
 		this.countdown = new Countdown();
 		this.grid = new Grid();
-		const cardSetSize = this.computeCardSetSize();
-		this.cardSet = new randomColorCardSet(cardSetSize);
-		// this.cardSet = new RandomNbrCardSet(cardSetSize);
+		this.cardSet = this.pickRandomCardSet(cardSetSize);
 
-		// this.setCardsInGridRandomly();
-		this.setCardsInGridInOrder();
+		this.setCardsInGridRandomly();
+		// this.setCardsInGridInOrder();
+	}
+
+	/* GAME SETTINGS             -----------------------------------------------*/
+
+	pickRandomCardSet(cardSetSize) {
+		const cardSets = [
+			() => new RandomNbrCardSet(cardSetSize),
+			() => new randomColorCardSet(cardSetSize),
+		]
+
+		return cardSets[Math.floor(Math.random() * cardSets.length)]();
 	}
 
 	/* USER INTERACTIONS         -----------------------------------------------*/
