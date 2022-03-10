@@ -33,7 +33,6 @@ class Grid {
 
 class Game {
 	constructor(difficulty) {
-		console.log('CTOR HERE');
 		difficulty = parseInt(difficulty) || 1;
 
 		document.addEventListener('click', (event) => { this.clickHandler(event) });
@@ -55,15 +54,15 @@ class Game {
 		this.rules = {
 			guessTime: Math.floor(1000 / difficulty),
 			tourTime: Math.floor(60 /difficulty)
-			// tourTime: Math.floor(6 /difficulty)
 		}
 
 		this.countdown = new Countdown();
 		this.grid = new Grid();
-		this.cardSet = new RandomNbrCardSet(8);
+		const cardSetSize = this.computeCardSetSize();
+		this.cardSet = new RandomNbrCardSet(cardSetSize);
 
-		// this.setCardsInGridRandomly();
-		this.setCardsInGridInOrder();
+		this.setCardsInGridRandomly();
+		// this.setCardsInGridInOrder();
 	}
 
 	/* USER INTERACTIONS         -----------------------------------------------*/
@@ -174,6 +173,16 @@ class Game {
 		for (let i = 0; i < this.cardSet.cards.length; i++) {
 			this.grid.addCard(this.cardSet.cards[i]);
 		}
+	}
+
+	computeCardSetSize() {
+		let col = 4;
+		let row = 4;
+		if (window.innerWidth < 670 || window.innerHeight < 800) {
+			col = 2;
+			row = 5;
+		}
+		return Math.floor((col * row) / 2);
 	}
 
 	/* TIMER MANIPULATIONS       -----------------------------------------------*/

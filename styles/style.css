@@ -9,7 +9,7 @@ body {
 
 h1 {
   font-family: sans-serif;
-  font-size: 3rem;
+  font-size: 1.5rem;
 }
 
 h1 a {
@@ -34,7 +34,7 @@ nav {
   justify-content: space-around;
 
   width: 100%;
-  height: 110px;
+  height: 90px;
 
   background-image: linear-gradient(
     to top,
@@ -85,8 +85,7 @@ nav #volume img {
 /* HEADER ---------------------------------------------*/
 
 header {
-  padding-top: 100px;
-  margin-bottom: 40px;
+  padding-top: 80px;
   display: flex;
   justify-content: center;
 }
@@ -106,12 +105,12 @@ header::-webkit-scrollbar {
 .circle {
   user-select: none;
   font-family: "Courier New", Courier, monospace;
-  font-size: 1.8rem;
-  width: 110px;
-  height: 110px;
+  font-size: 1rem;
+  width: 50px;
+  height: 50px;
   margin: 5px 25px;
   border-radius: 50%;
-  border: solid 20px rgba(180, 180, 180, 0.479);
+  border: solid 10px rgba(180, 180, 180, 0.479);
 
   display: flex;
   flex-shrink: 0;
@@ -123,11 +122,11 @@ header::-webkit-scrollbar {
 }
 
 .countdown-win {
-  border: solid 20px mediumseagreen;
+  border: solid 10px mediumseagreen;
 }
 
 .countdown-reach-limit {
-  border: solid 20px crimson;
+  border: solid 10px crimson;
   color: crimson;
 }
 
@@ -138,12 +137,22 @@ header::-webkit-scrollbar {
   }
 
   .circle {
+    border: solid 20px rgba(180, 180, 180, 0.479);
     font-family: "Courier New", Courier, monospace;
     font-size: 1.4rem;
     width: 80px;
     height: 80px;
     margin: 5px 100px;
     border-radius: 50%;
+  }
+
+  .countdown-win {
+    border: solid 20px mediumseagreen;
+  }
+
+  .countdown-reach-limit {
+    border: solid 20px crimson;
+    color: crimson;
   }
 }
 
@@ -164,8 +173,8 @@ header::-webkit-scrollbar {
 
 .card {
   user-select: none;
-  margin: 30px 30px;
-  height: 10vh;
+  margin:10px 20px;
+  height: 8vh;
   width: 10vh;
   border-radius: 50px;
   background: #e0e0e0;
@@ -192,7 +201,7 @@ header::-webkit-scrollbar {
 }
 
 .card:hover {
-  box-shadow: -15px 0 70px #f0f, 0 -20px 70px rgb(0, 255, 115), 20px 0 70px #0ff,
+  box-shadow: -8px 0 40px #f0f, 0 -8px 40px rgb(0, 255, 115), 8px 0 40px #0ff,
     0 20px 70px #ff6f00;
 }
 
@@ -211,6 +220,11 @@ header::-webkit-scrollbar {
   #grid {
     padding: 40px 5%;
   }
+  .card {
+    margin: 10px 20px;
+    height: 10vh;
+  }
+
 }
 
 /* MODAL  ---------------------------------------------*/
@@ -221,7 +235,7 @@ header::-webkit-scrollbar {
   z-index: 10;
   width: 100%;
   height: 100%;
-  margin-top: 110px;
+  margin-top: 90px;
   background-color: rgba(0, 0, 0, 0.7);
 }
 
