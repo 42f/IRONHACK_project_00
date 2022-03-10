@@ -53,7 +53,7 @@ class Game {
 		}
 		this.rules = {
 			guessTime: Math.floor(1000 / difficulty),
-			tourTime: Math.floor(60 /difficulty)
+			tourTime: Math.floor(60 / difficulty)
 		}
 
 		const cardSetSize = this.computeCardSetSize();
@@ -67,10 +67,24 @@ class Game {
 
 	/* GAME SETTINGS             -----------------------------------------------*/
 
+	revealCardSetName() {
+		setTimeout(() => {
+			const cardSetNameElement = document.querySelector('.card-set-name');
+			cardSetNameElement.classList.add('reveal');
+			cardSetNameElement.innerText = '';
+			cardSetNameElement.innerText = `Playing: ${this.cardSet.getName()}`;
+			setTimeout(() => {
+				cardSetNameElement.classList.add('hide');
+				cardSetNameElement.classList.remove('reveal');
+			}, 4500);
+		}, 1000);
+	}
+
 	pickRandomCardSet(cardSetSize) {
 		const cardSets = [
 			() => new RandomNbrCardSet(cardSetSize),
 			() => new randomColorCardSet(cardSetSize),
+			() => new randomChineseWords(cardSetSize),
 		]
 
 		return cardSets[Math.floor(Math.random() * cardSets.length)]();
@@ -114,7 +128,7 @@ class Game {
 	waitForSecondCard() {
 		this.guessTimeoutId = setTimeout(() => {
 			this.abortGuess(true);
-		}, this.rules.guessTime);
+		}, 800 + this.rules.guessTime);
 	}
 
 	clearWaiting() {
@@ -130,13 +144,13 @@ class Game {
 				card.unsetSneakPeak();
 				setTimeout(() => {
 					if (!this.state.timeOver && !card.isFound()) {
-						this.failSound.play().catch(() => {});
+						this.failSound.play().catch(() => { });
 						card.hideCard(true);
 					}
 					this.guessCouple = [];
 				}, 200);
 			})
-		}	 else {
+		} else {
 			this.guessCouple = [];
 		}
 	}
@@ -144,7 +158,7 @@ class Game {
 	manageCorrectGuess() {
 		clearTimeout(this.guessTimeoutId);
 		this.guessTimeoutId = null;
-		this.successSound.play().catch(() => {});
+		this.successSound.play().catch(() => { });
 
 		this.guessCouple.forEach(card => {
 			card.setCardAsFound()
@@ -207,7 +221,7 @@ class Game {
 	timerCallback() {
 		if (!this.state.timeOver) {
 			this.renderTime(this.countdown.getRemainingSeconds(), this.countdown.split());
-			if(this.countdown.getRemainingSeconds() <= 0) {
+			if (this.countdown.getRemainingSeconds() <= 0) {
 				this.state.timeOver = true;
 				this.endGame();
 			}
@@ -215,22 +229,15 @@ class Game {
 	}
 
 	startGame() {
-		setTimeout(() => {
-			const cardSetNameElement = document.querySelector('.card-set-name');
-			cardSetNameElement.classList.add('reveal');
-			cardSetNameElement.innerText = '';
-			cardSetNameElement.innerText = `Playing: ${this.cardSet.getName()}`;
-			setTimeout(() => {
-				cardSetNameElement.classList.add('hide');
-				cardSetNameElement.classList.remove('reveal');
-			},4500);
-		}, 1000);
+		this.revealCardSetName();
 		this.startTimer();
 		return new Promise((resolve, reject) => {
-			setInterval(() => {
-				if (this.state.timeOver && !this.state.win)	{
+			const intervalId = setInterval(() => {
+				if (this.state.timeOver && !this.state.win) {
+					clearInterval(intervalId);
 					reject();
 				} else if (this.state.timeOver || this.state.win) {
+					clearInterval(intervalId);
 					resolve();
 				}
 			}, 1000);
@@ -265,7 +272,7 @@ class Game {
 				this.timerElement.classList.toggle('countdown-reach-limit');
 				// play bip warning the end ofcountdown
 				if (this.timerBip && !this.timerBip.muted && remainingSeconds <= 10) {
-					this.timerBip.play().catch((e) => {});
+					this.timerBip.play().catch((e) => { });
 				}
 			}
 		} else {

@@ -277,14 +277,14 @@ header::-webkit-scrollbar {
 
 #infos article h3 {
   line-height: 0.1rem;
-  font-size: 3rem;
+  font-size: 2.5rem;
   text-align: center;
 }
 
 #infos article p {
   padding: 0 5%;
-  font-size: 1.8rem;
-  padding-bottom: 50px;
+  font-size: 1.4rem;
+  /* padding-bottom: 50px; */
 }
 
 @media (min-width: 600px) {
@@ -388,13 +388,13 @@ footer {
 }
 
 footer .card-set-name {
-  padding-top: 5px;
+  padding-top: 15px;
   font-family: 'Courier New', Courier, monospace;
   position: fixed;
   background-color: rgba(0, 0, 0, 0.6);
   color: rgb(201, 201, 201);
-  bottom: -30px;
-  height: 25px;
+  height: 40px;
+  bottom: -55px;
   width: 100%;
   text-align: center;
 }
@@ -410,7 +410,7 @@ footer .card-set-name {
 
 @keyframes slide-up {
   0% {
-    bottom: -25px;
+    bottom: -55px;
   }
   100% {
     bottom: 0px;
@@ -422,6 +422,6 @@ footer .card-set-name {
     bottom: 0px;
   }
   100% {
-    bottom: -30px;
+    bottom: -55px;
   }
 }
