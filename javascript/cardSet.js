@@ -97,35 +97,33 @@ class CardSetBase {
 	constructor(nbOfPairs) {
 		this.cards = [];
 		this.valuesSet = [];
+		this.populateValueSet(nbOfPairs);
 		this.populateCardSet(nbOfPairs);
+	}
+
+	isAllFound() { return !this.cards.some(card => !card.isFound()); }
+	findCard(predicate) { return this.cards.find(predicate); }
+	cardCmp(cardA, cardB) { return cardA.pairId === cardB.pairId;  }
+
+	// makes as many value as nbOfPairs times 2 and store them in the valueSet
+	// array only when it does not already exist
+	populateValueSet(nbOfPairs) {
+		for (let i = 0; i < nbOfPairs; i++) {
+			let value;
+			do {
+				value = this.makeOneValue();
+			} while(this.valuesSet.some(v => value === v))
+			this.valuesSet.push(value);
+		}
 	}
 
 	// makes as many card as nbOfPairs times 2 and store them in the cards array
 	populateCardSet(nbOfPairs) {
 		for (let pairId = 0; pairId < nbOfPairs; pairId++) {
-			const cardElements = this.makeOnePair(pairId);
+			const cardElements = this.makeOnePair(pairId, this.valuesSet.pop());
 			this.cards.push(cardElements[0], cardElements[1]);
 		}
 	}
-
-	isAllFound() {
-		return !this.cards.some(card => !card.isFound());
-	}
-
-	findCard(predicate) {
-		return this.cards.find(predicate);
-	}
-
-	// // generates one card, each derived class will implement its own factory
-	// makeOnePair() { }
-
-	// // generate values for cards
-	// populateValueSet(nbOfPairs) { }
-
-	// // returns true if two cards are from the same paire (i.e. has the same innerHTML)
-	cardCmp(cardA, cardB) {
-		return cardA.pairId === cardB.pairId;
-	 }
 
 	revealAllCards() {
 		for (const card of this.cards) {
@@ -154,19 +152,11 @@ class RandomNbrCardSet extends CardSetBase {
 		super(nbOfPairs);
 	}
 
-	// populateValueSet(nbOfPairs) {
-	// 	for (let i = 0; i < nbOfPairs; i++) {
-	// 		let value;
-	// 		do {
-	// 			value = Math.floor(Math.random() * 10000);
-	// 		} while(this.valuesSet.some(v => value === v))
-	// 		this.valuesSet.push(value);
-	// 	}
-	// }
+	makeOneValue() {
+		return Math.floor(Math.random() * (100));
+	}
 
-	makeOnePair(pairId) {
-		// const value = this.valuesSet.pop();
-		const value = Math.floor(Math.random() * 10000);
+	makeOnePair(pairId, value) {
 		return [new Card(pairId, value), new Card(pairId, value)];
 	}
 }
